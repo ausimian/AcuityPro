@@ -1,0 +1,486 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10001 /* ClearSightApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10001; };
+		A10002 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10002; };
+		A10003 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003; };
+		A10004 /* CalibrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10004; };
+		A10005 /* CalibrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10005; };
+		A10006 /* EyeTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10006; };
+		A10007 /* EyeTestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007; };
+		A10008 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008; };
+		A10009 /* EyeCoverPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009; };
+		A10010 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010; };
+		A10011 /* ResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011; };
+		A10012 /* ARFaceTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012; };
+		A10013 /* DistanceMeasurementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013; };
+		A10014 /* EyeTestScoringService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10014; };
+		A10015 /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10015; };
+		A10016 /* EyeTestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10016; };
+		A10017 /* VisualAcuityScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10017; };
+		A10018 /* ChartScaler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10018; };
+		A10019 /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10019; };
+		A10020 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10020; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B10001 /* ClearSightApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearSightApp.swift; sourceTree = "<group>"; };
+		B10002 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B10003 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		B10004 /* CalibrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationView.swift; sourceTree = "<group>"; };
+		B10005 /* CalibrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationViewModel.swift; sourceTree = "<group>"; };
+		B10006 /* EyeTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeTestView.swift; sourceTree = "<group>"; };
+		B10007 /* EyeTestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeTestViewModel.swift; sourceTree = "<group>"; };
+		B10008 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		B10009 /* EyeCoverPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeCoverPromptView.swift; sourceTree = "<group>"; };
+		B10010 /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
+		B10011 /* ResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewModel.swift; sourceTree = "<group>"; };
+		B10012 /* ARFaceTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARFaceTrackingService.swift; sourceTree = "<group>"; };
+		B10013 /* DistanceMeasurementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceMeasurementService.swift; sourceTree = "<group>"; };
+		B10014 /* EyeTestScoringService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeTestScoringService.swift; sourceTree = "<group>"; };
+		B10015 /* TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSession.swift; sourceTree = "<group>"; };
+		B10016 /* EyeTestResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeTestResult.swift; sourceTree = "<group>"; };
+		B10017 /* VisualAcuityScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualAcuityScale.swift; sourceTree = "<group>"; };
+		B10018 /* ChartScaler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartScaler.swift; sourceTree = "<group>"; };
+		B10019 /* AccessibilityHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityHelper.swift; sourceTree = "<group>"; };
+		B10020 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D10001 /* ClearSight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClearSight.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E10001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C10000 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				C10001 /* ClearSight */,
+				C10099 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C10001 /* ClearSight */ = {
+			isa = PBXGroup;
+			children = (
+				C10002 /* App */,
+				C10003 /* Features */,
+				C10008 /* Services */,
+				C10009 /* Models */,
+				C10010 /* Utilities */,
+				C10011 /* Resources */,
+			);
+			path = ClearSight;
+			sourceTree = "<group>";
+		};
+		C10002 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B10001 /* ClearSightApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		C10003 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				C10004 /* Onboarding */,
+				C10005 /* Calibration */,
+				C10006 /* EyeTest */,
+				C10007 /* Results */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		C10004 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B10002 /* OnboardingView.swift */,
+				B10003 /* OnboardingViewModel.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		C10005 /* Calibration */ = {
+			isa = PBXGroup;
+			children = (
+				B10004 /* CalibrationView.swift */,
+				B10005 /* CalibrationViewModel.swift */,
+			);
+			path = Calibration;
+			sourceTree = "<group>";
+		};
+		C10006 /* EyeTest */ = {
+			isa = PBXGroup;
+			children = (
+				B10006 /* EyeTestView.swift */,
+				B10007 /* EyeTestViewModel.swift */,
+				B10008 /* ChartView.swift */,
+				B10009 /* EyeCoverPromptView.swift */,
+			);
+			path = EyeTest;
+			sourceTree = "<group>";
+		};
+		C10007 /* Results */ = {
+			isa = PBXGroup;
+			children = (
+				B10010 /* ResultsView.swift */,
+				B10011 /* ResultsViewModel.swift */,
+			);
+			path = Results;
+			sourceTree = "<group>";
+		};
+		C10008 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B10012 /* ARFaceTrackingService.swift */,
+				B10013 /* DistanceMeasurementService.swift */,
+				B10014 /* EyeTestScoringService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C10009 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B10015 /* TestSession.swift */,
+				B10016 /* EyeTestResult.swift */,
+				B10017 /* VisualAcuityScale.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C10010 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				B10018 /* ChartScaler.swift */,
+				B10019 /* AccessibilityHelper.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		C10011 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B10020 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		C10099 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D10001 /* ClearSight.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F10001 /* ClearSight */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F10004 /* Build configuration list for PBXNativeTarget "ClearSight" */;
+			buildPhases = (
+				F10002 /* Sources */,
+				E10001 /* Frameworks */,
+				F10003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ClearSight;
+			productName = ClearSight;
+			productReference = D10001 /* ClearSight.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F10000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					F10001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = F10005 /* Build configuration list for PBXProject "ClearSight" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C10000 /* Root */;
+			productRefGroup = C10099 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F10001 /* ClearSight */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F10003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10020 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F10002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001 /* ClearSightApp.swift in Sources */,
+				A10002 /* OnboardingView.swift in Sources */,
+				A10003 /* OnboardingViewModel.swift in Sources */,
+				A10004 /* CalibrationView.swift in Sources */,
+				A10005 /* CalibrationViewModel.swift in Sources */,
+				A10006 /* EyeTestView.swift in Sources */,
+				A10007 /* EyeTestViewModel.swift in Sources */,
+				A10008 /* ChartView.swift in Sources */,
+				A10009 /* EyeCoverPromptView.swift in Sources */,
+				A10010 /* ResultsView.swift in Sources */,
+				A10011 /* ResultsViewModel.swift in Sources */,
+				A10012 /* ARFaceTrackingService.swift in Sources */,
+				A10013 /* DistanceMeasurementService.swift in Sources */,
+				A10014 /* EyeTestScoringService.swift in Sources */,
+				A10015 /* TestSession.swift in Sources */,
+				A10016 /* EyeTestResult.swift in Sources */,
+				A10017 /* VisualAcuityScale.swift in Sources */,
+				A10018 /* ChartScaler.swift in Sources */,
+				A10019 /* AccessibilityHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		G10001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		G10002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		G10003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "ClearSight uses the TrueDepth camera to measure your distance from the screen and track your eyes during the test.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.clearsight.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		G10004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "ClearSight uses the TrueDepth camera to measure your distance from the screen and track your eyes during the test.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.clearsight.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F10005 /* Build configuration list for PBXProject "ClearSight" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				G10001 /* Debug */,
+				G10002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F10004 /* Build configuration list for PBXNativeTarget "ClearSight" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				G10003 /* Debug */,
+				G10004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = F10000 /* Project object */;
+}
