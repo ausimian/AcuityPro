@@ -41,17 +41,41 @@ final class SpeechRecognitionService: ObservableObject {
     private var processedTranscriptLength = 0
 
     /// Maps spoken words/phonetics to Sloan letters.
+    /// Includes letter names, NATO alphabet, and common Speech framework mishearings.
     private static let phoneticMap: [String: Character] = [
-        "C": "C", "SEE": "C", "SEA": "C",
-        "D": "D", "DEE": "D",
-        "H": "H", "AITCH": "H",
-        "K": "K", "KAY": "K",
-        "N": "N", "EN": "N",
-        "O": "O", "OH": "O",
-        "R": "R", "ARE": "R", "OUR": "R",
-        "S": "S", "ES": "S",
-        "V": "V", "VEE": "V",
-        "Z": "Z", "ZED": "Z", "ZEE": "Z",
+        // C
+        "C": "C", "SEE": "C", "SEA": "C", "CEE": "C", "CE": "C",
+        "CHARLIE": "C",
+        // D
+        "D": "D", "DEE": "D", "THE": "D", "DE": "D", "TEA": "D",
+        "DELTA": "D",
+        // H
+        "H": "H", "AITCH": "H", "HAITCH": "H", "EIGHT": "H", "8": "H",
+        "ACHE": "H", "ATE": "H",
+        "HOTEL": "H",
+        // K
+        "K": "K", "KAY": "K", "OKAY": "K", "OK": "K", "CAKE": "K",
+        "KILO": "K",
+        // N
+        "N": "N", "EN": "N", "AND": "N", "AN": "N", "IN": "N",
+        "NOVEMBER": "N",
+        // O
+        "O": "O", "OH": "O", "OWE": "O", "0": "O",
+        "OSCAR": "O",
+        // R
+        "R": "R", "ARE": "R", "OUR": "R", "OR": "R", "ER": "R",
+        "AR": "R", "HOUR": "R",
+        "ROMEO": "R",
+        // S
+        "S": "S", "ES": "S", "YES": "S", "AS": "S", "IS": "S",
+        "SIERRA": "S",
+        // V
+        "V": "V", "VEE": "V", "WE": "V", "FEE": "V", "BE": "V",
+        "BEE": "V", "WEE": "V",
+        "VICTOR": "V",
+        // Z
+        "Z": "Z", "ZED": "Z", "ZEE": "Z", "SAID": "Z", "SET": "Z",
+        "ZULU": "Z",
     ]
 
     private static let sloanLetters: Set<Character> = Set("CDHKNORSVZ")
@@ -185,6 +209,9 @@ final class SpeechRecognitionService: ObservableObject {
         let startIndex = transcript.index(transcript.startIndex, offsetBy: processedTranscriptLength)
         let newPortion = String(transcript[startIndex...])
         processedTranscriptLength = transcript.count
+
+        // Clear stale display — user is speaking again
+        lastRecognizedLetter = nil
 
         // Split new portion into words and map each to a Sloan letter
         let words = newPortion.split(separator: " ").map(String.init)
