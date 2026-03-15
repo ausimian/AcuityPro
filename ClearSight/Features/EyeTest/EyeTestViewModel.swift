@@ -66,36 +66,17 @@ final class EyeTestViewModel: ObservableObject {
         let rows = (which == .right) ? rightEyeRows : leftEyeRows
         guard !rows.isEmpty else { return }
 
-        // Set up the first row (without starting speech yet)
         currentRowIndex = 0
         currentRow = rows[0].row
         currentLetters = rows[0].letters
         userResponses = []
         updateLetterHeight()
-        
+
         testState = .testingEye(which: which, currentRow: 0)
-        
-        // Always request speech authorization and start listening
-        Task {
-            let authorized = await speechService.requestAuthorization()
-            guard authorized else {
-                print("⚠️ Speech recognition not authorized: \(speechService.authorizationStatus)")
-                return
-            }
-            
-            // Clear any stale recognition results
-            speechService.lastRecognizedLetter = nil
-            
-            // Small delay to ensure clean start
-            try? await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds
-            
-            do {
-                try speechService.startListening()
-                print("✓ Speech recognition started successfully")
-            } catch {
-                print("❌ Failed to start listening: \(error)")
-            }
-        }
+
+        // Start listening — permissions already granted at onboarding
+        speechService.lastRecognizedLetter = nil
+        try? speechService.startListening()
     }
 
     func submitLetter(_ letter: Character) {

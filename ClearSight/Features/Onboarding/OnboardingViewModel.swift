@@ -1,34 +1,69 @@
 import AVFoundation
 import ARKit
+import Speech
 
 @MainActor
 final class OnboardingViewModel: ObservableObject {
     @Published var cameraAuthorized = false
+    @Published var microphoneAuthorized = false
+    @Published var speechAuthorized = false
     @Published var deviceSupported = true
     @Published var hasCheckedPermissions = false
 
-    func checkCapabilities() {
-        deviceSupported = ARFaceTrackingConfiguration.isSupported
-
-        let status = AVCaptureDevice.authorizationStatus(for: .video)
-        switch status {
-        case .authorized:
-            cameraAuthorized = true
-            hasCheckedPermissions = true
-        case .notDetermined:
-            hasCheckedPermissions = false
-        case .denied, .restricted:
-            cameraAuthorized = false
-            hasCheckedPermissions = true
-        @unknown default:
-            cameraAuthorized = false
-            hasCheckedPermissions = true
-        }
+    var allPermissionsGranted: Bool {
+        cameraAuthorized && microphoneAuthorized && speechAuthorized
     }
 
-    func requestCameraAccess() async {
-        let granted = await AVCaptureDevice.requestAccess(for: .video)
-        cameraAuthorized = granted
+    var hasDeniedPermissions: Bool {
+        hasCheckedPermissions && !allPermissionsGranted
+    }
+
+    func checkCapabilities() {
+        deviceSupported = ARFaceTrackingConfiguration.isSupported
+        checkCurrentStatus()
+    }
+
+    func requestAllPermissions() async {
+        // Camera
+        if !cameraAuthorized {
+            let granted = await AVCaptureDevice.requestAccess(for: .video)
+            cameraAuthorized = granted
+        }
+
+        // Microphone
+        if !microphoneAuthorized {
+            let granted = await AVAudioApplication.requestRecordPermission()
+            microphoneAuthorized = granted
+        }
+
+        // Speech recognition
+        if !speechAuthorized {
+            let status = await withCheckedContinuation { continuation in
+                SFSpeechRecognizer.requestAuthorization { status in
+                    continuation.resume(returning: status)
+                }
+            }
+            speechAuthorized = (status == .authorized)
+        }
+
         hasCheckedPermissions = true
+    }
+
+    private func checkCurrentStatus() {
+        // Camera
+        let cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        cameraAuthorized = (cameraStatus == .authorized)
+
+        // Microphone
+        microphoneAuthorized = (AVAudioApplication.shared.recordPermission == .granted)
+
+        // Speech
+        let speechStatus = SFSpeechRecognizer.authorizationStatus()
+        speechAuthorized = (speechStatus == .authorized)
+
+        // If any have been explicitly denied/granted, we've checked
+        let cameraDetermined = cameraStatus != .notDetermined
+        let speechDetermined = speechStatus != .notDetermined
+        hasCheckedPermissions = cameraDetermined && speechDetermined
     }
 }
