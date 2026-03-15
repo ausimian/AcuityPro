@@ -24,6 +24,7 @@ final class SpeechRecognitionService: ObservableObject {
     // MARK: - Published State
 
     @Published var isListening = false
+    @Published var isProcessing = false  // True when speech is being analyzed
     @Published var lastRecognizedLetter: Character?
     @Published var authorizationStatus: SFSpeechRecognizerAuthorizationStatus = .notDetermined
     @Published var error: SpeechError?

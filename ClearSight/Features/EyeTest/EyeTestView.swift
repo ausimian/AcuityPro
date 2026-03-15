@@ -169,15 +169,27 @@ struct EyeTestView: View {
                         .id(viewModel.userResponses.count) // re-animate on each new letter
                 }
 
-                // Listening indicator
+                // Listening indicator with processing state
                 if viewModel.speechService.isListening {
-                    HStack(spacing: 8) {
-                        Image(systemName: "mic.fill")
-                            .foregroundStyle(.green)
-                            .symbolEffect(.variableColor.iterative.reversing, options: .repeating)
-                        Text("Listening — say each letter aloud")
-                            .font(.subheadline)
-                            .foregroundStyle(.green)
+                    if viewModel.speechService.isProcessing {
+                        // Processing speech
+                        HStack(spacing: 8) {
+                            ProgressView()
+                                .controlSize(.small)
+                            Text("Processing...")
+                                .font(.subheadline)
+                                .foregroundStyle(.orange)
+                        }
+                    } else {
+                        // Ready for input
+                        HStack(spacing: 8) {
+                            Image(systemName: "mic.fill")
+                                .foregroundStyle(.green)
+                                .symbolEffect(.variableColor.iterative.reversing, options: .repeating)
+                            Text("Ready — speak now")
+                                .font(.subheadline.bold())
+                                .foregroundStyle(.green)
+                        }
                     }
                 } else {
                     HStack(spacing: 8) {
@@ -203,6 +215,7 @@ struct EyeTestView: View {
         .frame(height: 140)
         .animation(.easeInOut(duration: 0.2), value: viewModel.speechService.lastRecognizedLetter)
         .animation(.easeInOut(duration: 0.2), value: viewModel.speechService.error)
+        .animation(.easeInOut(duration: 0.15), value: viewModel.speechService.isProcessing)
     }
     
     private var letterProgressView: some View {

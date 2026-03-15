@@ -7,15 +7,17 @@ struct OnboardingView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 32) {
+            VStack(spacing: 24) {
                 Spacer()
 
-                Image(systemName: "eye.circle.fill")
-                    .font(.system(size: 80))
-                    .foregroundStyle(.tint)
+                HStack(spacing: 16) {
+                    Image(systemName: "eye.circle.fill")
+                        .font(.system(size: 60))
+                        .foregroundStyle(.tint)
 
-                Text("ClearSight")
-                    .font(.largeTitle.bold())
+                    Text("ClearSight")
+                        .font(.largeTitle.bold())
+                }
 
                 Text("A quick visual acuity screening using your iPhone's TrueDepth camera.")
                     .font(.body)

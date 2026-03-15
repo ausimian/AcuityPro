@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0126818B2F662FFE00C3BFAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0126818A2F662FFE00C3BFAD /* AppDelegate.swift */; };
 		A10001 /* ClearSightApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10001 /* ClearSightApp.swift */; };
 		A10002 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10002 /* OnboardingView.swift */; };
 		A10003 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003 /* OnboardingViewModel.swift */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		012681892F652F6E00C3BFAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0126818A2F662FFE00C3BFAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B10001 /* ClearSightApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearSightApp.swift; sourceTree = "<group>"; };
 		B10002 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		B10003 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				B10007 /* EyeTestViewModel.swift */,
 				B10008 /* ChartView.swift */,
 				B10009 /* EyeCoverPromptView.swift */,
+				0126818A2F662FFE00C3BFAD /* AppDelegate.swift */,
 			);
 			path = EyeTest;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				A10016 /* EyeTestResult.swift in Sources */,
 				A10017 /* VisualAcuityScale.swift in Sources */,
 				A10018 /* ChartScaler.swift in Sources */,
+				0126818B2F662FFE00C3BFAD /* AppDelegate.swift in Sources */,
 				A10019 /* AccessibilityHelper.swift in Sources */,
 				A10021 /* SpeechRecognitionService.swift in Sources */,
 			);
@@ -417,13 +421,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "ClearSight uses the TrueDepth camera to measure your distance from the screen and track your eyes during the test.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "ClearSight needs microphone access to hear you read the chart letters.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "ClearSight uses speech recognition so you can read letters aloud during the eye test.";
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "ClearSight uses the camera to measure your distance from the screen and ensure accurate vision testing.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "ClearSight needs microphone access for voice-based letter input during the eye test.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "ClearSight uses speech recognition to allow hands-free input of letters during the eye test.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -448,13 +453,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "ClearSight uses the TrueDepth camera to measure your distance from the screen and track your eyes during the test.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "ClearSight needs microphone access to hear you read the chart letters.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "ClearSight uses speech recognition so you can read letters aloud during the eye test.";
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "ClearSight uses the camera to measure your distance from the screen and ensure accurate vision testing.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "ClearSight needs microphone access for voice-based letter input during the eye test.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "ClearSight uses speech recognition to allow hands-free input of letters during the eye test.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
