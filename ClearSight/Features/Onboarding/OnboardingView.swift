@@ -7,15 +7,17 @@ struct OnboardingView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 32) {
+            VStack(spacing: 24) {
                 Spacer()
 
-                Image(systemName: "eye.circle.fill")
-                    .font(.system(size: 80))
-                    .foregroundStyle(.tint)
+                HStack(spacing: 16) {
+                    Image(systemName: "eye.circle.fill")
+                        .font(.system(size: 60))
+                        .foregroundStyle(.tint)
 
-                Text("ClearSight")
-                    .font(.largeTitle.bold())
+                    Text("ClearSight")
+                        .font(.largeTitle.bold())
+                }
 
                 Text("A quick visual acuity screening using your iPhone's TrueDepth camera.")
                     .font(.body)
@@ -25,8 +27,8 @@ struct OnboardingView: View {
 
                 if !viewModel.deviceSupported {
                     unsupportedDeviceView
-                } else if viewModel.hasCheckedPermissions && !viewModel.cameraAuthorized {
-                    cameraPermissionDeniedView
+                } else if viewModel.hasDeniedPermissions {
+                    permissionDeniedView
                 } else {
                     startButton
                 }
@@ -53,10 +55,8 @@ struct OnboardingView: View {
     private var startButton: some View {
         Button {
             Task {
-                if !viewModel.hasCheckedPermissions {
-                    await viewModel.requestCameraAccess()
-                }
-                if viewModel.cameraAuthorized {
+                await viewModel.requestAllPermissions()
+                if viewModel.allPermissionsGranted {
                     navigateToTest = true
                 }
             }
@@ -83,15 +83,18 @@ struct OnboardingView: View {
         }
     }
 
-    private var cameraPermissionDeniedView: some View {
+    private var permissionDeniedView: some View {
         VStack(spacing: 12) {
-            Image(systemName: "camera.fill")
-                .font(.title)
-                .foregroundStyle(.red)
-            Text("Camera access is required. Please enable it in Settings.")
-                .font(.subheadline)
+            permissionRow("Camera", granted: viewModel.cameraAuthorized)
+            permissionRow("Microphone", granted: viewModel.microphoneAuthorized)
+            permissionRow("Speech Recognition", granted: viewModel.speechAuthorized)
+
+            Text("All permissions are required. Please enable them in Settings.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
+                .padding(.top, 4)
 
             Button("Open Settings") {
                 if let url = URL(string: UIApplication.openSettingsURLString) {
@@ -99,6 +102,15 @@ struct OnboardingView: View {
                 }
             }
             .buttonStyle(.bordered)
+        }
+    }
+
+    private func permissionRow(_ name: String, granted: Bool) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: granted ? "checkmark.circle.fill" : "xmark.circle.fill")
+                .foregroundStyle(granted ? .green : .red)
+            Text(name)
+                .font(.subheadline)
         }
     }
 }

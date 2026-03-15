@@ -42,7 +42,13 @@ enum VisualAcuityScale {
     static let sloanLetters: [Character] = ["C", "D", "H", "K", "N", "O", "R", "S", "V", "Z"]
 
     /// Generate a randomised set of letters for a given row.
+    /// No consecutive duplicates, matching clinical chart conventions.
     static func randomLetters(count: Int) -> [Character] {
-        (0..<count).map { _ in sloanLetters.randomElement()! }
+        var result: [Character] = []
+        for _ in 0..<count {
+            let candidates = sloanLetters.filter { $0 != result.last }
+            result.append(candidates.randomElement()!)
+        }
+        return result
     }
 }

@@ -14,6 +14,8 @@ final class EyeTestViewModel: ObservableObject {
     @Published var distanceCm: Float = 33
     @Published var result: EyeTestResult?
 
+    let speechService = SpeechRecognitionService()
+
     // MARK: - Private
 
     private let scoringService = EyeTestScoringService()
@@ -42,6 +44,14 @@ final class EyeTestViewModel: ObservableObject {
             }
             .store(in: &cancellables)
 
+        // Subscribe to speech recognition results
+        speechService.recognizedLetterPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] letter in
+                self?.submitLetter(letter)
+            }
+            .store(in: &cancellables)
+
         testState = .calibrating
     }
 
@@ -56,22 +66,44 @@ final class EyeTestViewModel: ObservableObject {
         let rows = (which == .right) ? rightEyeRows : leftEyeRows
         guard !rows.isEmpty else { return }
 
-        loadRow(index: 0, eye: which)
+        currentRowIndex = 0
+        currentRow = rows[0].row
+        currentLetters = rows[0].letters
+        userResponses = []
+        updateLetterHeight()
+
         testState = .testingEye(which: which, currentRow: 0)
+
+        // Start listening — permissions already granted at onboarding
+        speechService.lastRecognizedLetter = nil
+        try? speechService.startListening()
     }
 
     func submitLetter(_ letter: Character) {
         guard case .testingEye(let eye, _) = testState else { return }
 
-        HapticFeedback.letterTapped()
-        userResponses.append(letter)
-
         let rows = (eye == .right) ? rightEyeRows : leftEyeRows
         let expectedCount = rows[currentRowIndex].letters.count
+        
+        // Ignore letters if we've already completed this row
+        guard userResponses.count < expectedCount else {
+            print("⚠️ Ignoring extra letter '\(letter)' - row already complete")
+            return
+        }
+
+        HapticFeedback.letterTapped()
+        userResponses.append(letter)
 
         if userResponses.count >= expectedCount {
             completeCurrentRow(eye: eye)
         }
+    }
+
+    func undoLastLetter() {
+        guard case .testingEye = testState else { return }
+        guard !userResponses.isEmpty else { return }
+        userResponses.removeLast()
+        HapticFeedback.letterTapped()
     }
 
     func skipRow() {
@@ -96,6 +128,22 @@ final class EyeTestViewModel: ObservableObject {
         currentLetters = rows[index].letters
         userResponses = []
         updateLetterHeight()
+
+        // Stop listening and clear any pending recognition
+        speechService.stopListening()
+        speechService.lastRecognizedLetter = nil
+        
+        // Small delay to ensure previous session is fully stopped
+        Task {
+            try? await Task.sleep(nanoseconds: 200_000_000) // 0.2 seconds
+            
+            do {
+                try speechService.startListening()
+                print("✓ Restarted speech recognition for new row")
+            } catch {
+                print("❌ Failed to restart listening: \(error)")
+            }
+        }
     }
 
     private func completeCurrentRow(eye: Eye) {
@@ -128,7 +176,12 @@ final class EyeTestViewModel: ObservableObject {
         }
     }
 
+    private func stopVoice() {
+        speechService.stopListening()
+    }
+
     private func finishEye(_ eye: Eye) {
+        stopVoice()
         if eye == .right {
             // Move to left eye
             testState = .coveringEye(which: .right)
@@ -156,6 +209,7 @@ final class EyeTestViewModel: ObservableObject {
     }
 
     func resetTest() {
+        speechService.reset()
         cancellables.removeAll()
         testState = .idle
         result = nil
