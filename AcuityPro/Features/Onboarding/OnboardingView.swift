@@ -86,9 +86,8 @@ struct OnboardingView: View {
     private var permissionDeniedView: some View {
         VStack(spacing: 12) {
             permissionRow("Camera", granted: viewModel.cameraAuthorized)
-            permissionRow("Microphone", granted: viewModel.microphoneAuthorized)
 
-            Text("All permissions are required. Please enable them in Settings.")
+            Text("Camera permission is required. Please enable it in Settings.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)

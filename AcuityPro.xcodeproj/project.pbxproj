@@ -419,7 +419,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "AcuityPro uses the camera to measure your distance from the screen and ensure accurate vision testing.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "AcuityPro needs microphone access for AR face tracking during the eye test.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -450,7 +449,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "AcuityPro uses the camera to measure your distance from the screen and ensure accurate vision testing.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "AcuityPro needs microphone access for AR face tracking during the eye test.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
