@@ -6,11 +6,17 @@ import Foundation
 @MainActor
 final class DistanceMeasurementService: ObservableObject {
 
-    // MARK: - Constants
+    // MARK: - Configuration
 
-    static let targetDistanceCm: Float = 33.0
-    static let toleranceCm: Float = 3.0
-    static let lockDurationSec: TimeInterval = 2.0
+    let targetDistanceCm: Float
+    let toleranceCm: Float
+    let lockDurationSec: TimeInterval
+
+    init(targetDistanceCm: Float = 50.0, toleranceCm: Float = 3.0, lockDurationSec: TimeInterval = 2.0) {
+        self.targetDistanceCm = targetDistanceCm
+        self.toleranceCm = toleranceCm
+        self.lockDurationSec = lockDurationSec
+    }
 
     // MARK: - Published State
 
@@ -56,7 +62,7 @@ final class DistanceMeasurementService: ObservableObject {
     // MARK: - Private
 
     private func handleDistanceUpdate(_ distance: Float) {
-        let inRange = abs(distance - Self.targetDistanceCm) <= Self.toleranceCm
+        let inRange = abs(distance - targetDistanceCm) <= toleranceCm
         self.isInRange = inRange
 
         if inRange {
@@ -89,9 +95,9 @@ final class DistanceMeasurementService: ObservableObject {
         }
 
         let elapsed = Date().timeIntervalSince(startTime)
-        lockProgress = min(elapsed / Self.lockDurationSec, 1.0)
+        lockProgress = min(elapsed / lockDurationSec, 1.0)
 
-        if elapsed >= Self.lockDurationSec {
+        if elapsed >= lockDurationSec {
             isLocked = true
             progressTimer?.invalidate()
             progressTimer = nil

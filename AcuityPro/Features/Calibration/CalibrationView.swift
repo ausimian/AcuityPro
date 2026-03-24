@@ -48,7 +48,7 @@ struct CalibrationView: View {
                     .font(.headline)
                     .multilineTextAlignment(.center)
 
-                Text("Target: \(Int(DistanceMeasurementService.targetDistanceCm)) cm")
+                Text("Target: \(Int(viewModel.distanceService.targetDistanceCm)) cm")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -88,7 +88,7 @@ struct CalibrationView: View {
         if !viewModel.isTrackingFace {
             return "Hold your phone at arm's length, screen facing you"
         }
-        if viewModel.distanceCm < DistanceMeasurementService.targetDistanceCm - DistanceMeasurementService.toleranceCm {
+        if viewModel.distanceCm < viewModel.distanceService.targetDistanceCm - viewModel.distanceService.toleranceCm {
             return "Move the phone further away"
         }
         return "Bring the phone a little closer"

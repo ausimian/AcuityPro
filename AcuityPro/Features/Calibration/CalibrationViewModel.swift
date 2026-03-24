@@ -9,7 +9,7 @@ final class CalibrationViewModel: ObservableObject {
     @Published var lockProgress: Double = 0
     @Published var isTrackingFace = false
 
-    private let distanceService = DistanceMeasurementService()
+    let distanceService = DistanceMeasurementService()
     private var cancellables = Set<AnyCancellable>()
 
     func startCalibration(arService: ARFaceTrackingService) {

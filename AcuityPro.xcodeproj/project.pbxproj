@@ -13,21 +13,45 @@
 		A10003 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10003 /* OnboardingViewModel.swift */; };
 		A10004 /* CalibrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10004 /* CalibrationView.swift */; };
 		A10005 /* CalibrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10005 /* CalibrationViewModel.swift */; };
-		A10006 /* EyeTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10006 /* EyeTestView.swift */; };
-		A10007 /* EyeTestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10007 /* EyeTestViewModel.swift */; };
-		A10008 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10008 /* ChartView.swift */; };
+		/* Old EyeTest files removed */
 		A10009 /* EyeCoverPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10009 /* EyeCoverPromptView.swift */; };
-		A10010 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10010 /* ResultsView.swift */; };
-		A10011 /* ResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10011 /* ResultsViewModel.swift */; };
+		/* Old Results files removed */
 		A10012 /* ARFaceTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10012 /* ARFaceTrackingService.swift */; };
 		A10013 /* DistanceMeasurementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10013 /* DistanceMeasurementService.swift */; };
-		A10014 /* EyeTestScoringService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10014 /* EyeTestScoringService.swift */; };
-		A10015 /* TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10015 /* TestSession.swift */; };
-		A10016 /* EyeTestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10016 /* EyeTestResult.swift */; };
-		A10017 /* VisualAcuityScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10017 /* VisualAcuityScale.swift */; };
-		A10018 /* ChartScaler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10018 /* ChartScaler.swift */; };
+		/* Old scoring/model/utility files removed */
 		A10019 /* AccessibilityHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10019 /* AccessibilityHelper.swift */; };
 		A10020 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10020 /* Assets.xcassets */; };
+		A10021 /* RefractionSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10021 /* RefractionSession.swift */; };
+		A10022 /* Prescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10022 /* Prescription.swift */; };
+		A10023 /* FarPointMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10023 /* FarPointMeasurement.swift */; };
+		A10024 /* NearAddTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10024 /* NearAddTable.swift */; };
+		A10025 /* RefractionCalculationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10025 /* RefractionCalculationService.swift */; };
+		A10026 /* FarPointTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10026 /* FarPointTrackingService.swift */; };
+		A10027 /* RefractionCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10027 /* RefractionCoordinatorView.swift */; };
+		A10028 /* RefractionCoordinatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10028 /* RefractionCoordinatorViewModel.swift */; };
+		A10029 /* SphereTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029 /* SphereTestView.swift */; };
+		A10030 /* SphereTestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030 /* SphereTestViewModel.swift */; };
+		A10031 /* DistanceGaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10031 /* DistanceGaugeView.swift */; };
+		A10032 /* LandoltCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10032 /* LandoltCView.swift */; };
+		A10033 /* PhaseInstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10033 /* PhaseInstructionView.swift */; };
+		A10034 /* EyeCoverPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10034 /* EyeCoverPromptView.swift */; };
+		A10035 /* PrescriptionResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10035 /* PrescriptionResultsView.swift */; };
+		A10036 /* PrescriptionResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10036 /* PrescriptionResultsViewModel.swift */; };
+		A10037 /* FanChartShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10037 /* FanChartShape.swift */; };
+		A10038 /* CylinderTestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10038 /* CylinderTestViewModel.swift */; };
+		A10039 /* CylinderAxisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10039 /* CylinderAxisView.swift */; };
+		A10040 /* CylinderPowerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10040 /* CylinderPowerView.swift */; };
+		A10041 /* NearAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10041 /* NearAddView.swift */; };
+		A10042 /* NearAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10042 /* NearAddViewModel.swift */; };
+		A10043 /* IntermediateAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10043 /* IntermediateAddView.swift */; };
+		A10044 /* IntermediateAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10044 /* IntermediateAddViewModel.swift */; };
+		A10045 /* PupillaryDistanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10045 /* PupillaryDistanceService.swift */; };
+		A10046 /* PDMeasurementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10046 /* PDMeasurementView.swift */; };
+		A10047 /* PDMeasurementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10047 /* PDMeasurementViewModel.swift */; };
+		A10048 /* MasterEyeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10048 /* MasterEyeView.swift */; };
+		A10049 /* MasterEyeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10049 /* MasterEyeViewModel.swift */; };
+		A10050 /* BinocularBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10050 /* BinocularBalanceView.swift */; };
+		A10051 /* BinocularBalanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10051 /* BinocularBalanceViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +78,37 @@
 		B10019 /* AccessibilityHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityHelper.swift; sourceTree = "<group>"; };
 		B10020 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D10001 /* AcuityPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AcuityPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B10021 /* RefractionSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefractionSession.swift; sourceTree = "<group>"; };
+		B10022 /* Prescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prescription.swift; sourceTree = "<group>"; };
+		B10023 /* FarPointMeasurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FarPointMeasurement.swift; sourceTree = "<group>"; };
+		B10024 /* NearAddTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearAddTable.swift; sourceTree = "<group>"; };
+		B10025 /* RefractionCalculationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefractionCalculationService.swift; sourceTree = "<group>"; };
+		B10026 /* FarPointTrackingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FarPointTrackingService.swift; sourceTree = "<group>"; };
+		B10027 /* RefractionCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefractionCoordinatorView.swift; sourceTree = "<group>"; };
+		B10028 /* RefractionCoordinatorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefractionCoordinatorViewModel.swift; sourceTree = "<group>"; };
+		B10029 /* SphereTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphereTestView.swift; sourceTree = "<group>"; };
+		B10030 /* SphereTestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphereTestViewModel.swift; sourceTree = "<group>"; };
+		B10031 /* DistanceGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceGaugeView.swift; sourceTree = "<group>"; };
+		B10032 /* LandoltCView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandoltCView.swift; sourceTree = "<group>"; };
+		B10033 /* PhaseInstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseInstructionView.swift; sourceTree = "<group>"; };
+		B10034 /* EyeCoverPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeCoverPromptView.swift; sourceTree = "<group>"; };
+		B10035 /* PrescriptionResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrescriptionResultsView.swift; sourceTree = "<group>"; };
+		B10036 /* PrescriptionResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrescriptionResultsViewModel.swift; sourceTree = "<group>"; };
+		B10037 /* FanChartShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanChartShape.swift; sourceTree = "<group>"; };
+		B10038 /* CylinderTestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylinderTestViewModel.swift; sourceTree = "<group>"; };
+		B10039 /* CylinderAxisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylinderAxisView.swift; sourceTree = "<group>"; };
+		B10040 /* CylinderPowerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CylinderPowerView.swift; sourceTree = "<group>"; };
+		B10041 /* NearAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearAddView.swift; sourceTree = "<group>"; };
+		B10042 /* NearAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearAddViewModel.swift; sourceTree = "<group>"; };
+		B10043 /* IntermediateAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntermediateAddView.swift; sourceTree = "<group>"; };
+		B10044 /* IntermediateAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntermediateAddViewModel.swift; sourceTree = "<group>"; };
+		B10045 /* PupillaryDistanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PupillaryDistanceService.swift; sourceTree = "<group>"; };
+		B10046 /* PDMeasurementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDMeasurementView.swift; sourceTree = "<group>"; };
+		B10047 /* PDMeasurementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDMeasurementViewModel.swift; sourceTree = "<group>"; };
+		B10048 /* MasterEyeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterEyeView.swift; sourceTree = "<group>"; };
+		B10049 /* MasterEyeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterEyeViewModel.swift; sourceTree = "<group>"; };
+		B10050 /* BinocularBalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinocularBalanceView.swift; sourceTree = "<group>"; };
+		B10051 /* BinocularBalanceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinocularBalanceViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				B10001 /* AcuityProApp.swift */,
+				0126818A2F662FFE00C3BFAD /* AppDelegate.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -102,7 +158,7 @@
 			children = (
 				C10004 /* Onboarding */,
 				C10005 /* Calibration */,
-				C10006 /* EyeTest */,
+				C10012 /* Refraction */,
 				C10007 /* Results */,
 			);
 			path = Features;
@@ -126,25 +182,115 @@
 			path = Calibration;
 			sourceTree = "<group>";
 		};
-		C10006 /* EyeTest */ = {
-			isa = PBXGroup;
-			children = (
-				B10006 /* EyeTestView.swift */,
-				B10007 /* EyeTestViewModel.swift */,
-				B10008 /* ChartView.swift */,
-				B10009 /* EyeCoverPromptView.swift */,
-				0126818A2F662FFE00C3BFAD /* AppDelegate.swift */,
-			);
-			path = EyeTest;
-			sourceTree = "<group>";
-		};
+		/* C10006 EyeTest group removed — replaced by Refraction */
 		C10007 /* Results */ = {
 			isa = PBXGroup;
 			children = (
-				B10010 /* ResultsView.swift */,
-				B10011 /* ResultsViewModel.swift */,
+				B10035 /* PrescriptionResultsView.swift */,
+				B10036 /* PrescriptionResultsViewModel.swift */,
 			);
 			path = Results;
+			sourceTree = "<group>";
+		};
+		C10012 /* Refraction */ = {
+			isa = PBXGroup;
+			children = (
+				B10027 /* RefractionCoordinatorView.swift */,
+				B10028 /* RefractionCoordinatorViewModel.swift */,
+				C10013 /* Sphere */,
+				C10016 /* Cylinder */,
+				C10017 /* BinocularBalance */,
+				C10018 /* NearAdd */,
+				C10019 /* IntermediateAdd */,
+				C10020 /* MasterEye */,
+				C10021 /* PupillaryDistance */,
+				C10014 /* Shared */,
+			);
+			path = Refraction;
+			sourceTree = "<group>";
+		};
+		C10017 /* BinocularBalance */ = {
+			isa = PBXGroup;
+			children = (
+				B10050 /* BinocularBalanceView.swift */,
+				B10051 /* BinocularBalanceViewModel.swift */,
+			);
+			path = BinocularBalance;
+			sourceTree = "<group>";
+		};
+		C10018 /* NearAdd */ = {
+			isa = PBXGroup;
+			children = (
+				B10041 /* NearAddView.swift */,
+				B10042 /* NearAddViewModel.swift */,
+			);
+			path = NearAdd;
+			sourceTree = "<group>";
+		};
+		C10019 /* IntermediateAdd */ = {
+			isa = PBXGroup;
+			children = (
+				B10043 /* IntermediateAddView.swift */,
+				B10044 /* IntermediateAddViewModel.swift */,
+			);
+			path = IntermediateAdd;
+			sourceTree = "<group>";
+		};
+		C10020 /* MasterEye */ = {
+			isa = PBXGroup;
+			children = (
+				B10048 /* MasterEyeView.swift */,
+				B10049 /* MasterEyeViewModel.swift */,
+			);
+			path = MasterEye;
+			sourceTree = "<group>";
+		};
+		C10021 /* PupillaryDistance */ = {
+			isa = PBXGroup;
+			children = (
+				B10046 /* PDMeasurementView.swift */,
+				B10047 /* PDMeasurementViewModel.swift */,
+			);
+			path = PupillaryDistance;
+			sourceTree = "<group>";
+		};
+		C10016 /* Cylinder */ = {
+			isa = PBXGroup;
+			children = (
+				B10038 /* CylinderTestViewModel.swift */,
+				B10039 /* CylinderAxisView.swift */,
+				B10040 /* CylinderPowerView.swift */,
+			);
+			path = Cylinder;
+			sourceTree = "<group>";
+		};
+		C10013 /* Sphere */ = {
+			isa = PBXGroup;
+			children = (
+				B10029 /* SphereTestView.swift */,
+				B10030 /* SphereTestViewModel.swift */,
+			);
+			path = Sphere;
+			sourceTree = "<group>";
+		};
+		C10014 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				B10031 /* DistanceGaugeView.swift */,
+				B10033 /* PhaseInstructionView.swift */,
+				B10034 /* EyeCoverPromptView.swift */,
+				C10015 /* TargetViews */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		C10015 /* TargetViews */ = {
+			isa = PBXGroup;
+			children = (
+				B10032 /* LandoltCView.swift */,
+				B10037 /* FanChartShape.swift */,
+			);
+			path = TargetViews;
 			sourceTree = "<group>";
 		};
 		C10008 /* Services */ = {
@@ -152,7 +298,9 @@
 			children = (
 				B10012 /* ARFaceTrackingService.swift */,
 				B10013 /* DistanceMeasurementService.swift */,
-				B10014 /* EyeTestScoringService.swift */,
+				B10025 /* RefractionCalculationService.swift */,
+				B10026 /* FarPointTrackingService.swift */,
+				B10045 /* PupillaryDistanceService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -160,9 +308,10 @@
 		C10009 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				B10015 /* TestSession.swift */,
-				B10016 /* EyeTestResult.swift */,
-				B10017 /* VisualAcuityScale.swift */,
+				B10021 /* RefractionSession.swift */,
+				B10022 /* Prescription.swift */,
+				B10023 /* FarPointMeasurement.swift */,
+				B10024 /* NearAddTable.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -170,7 +319,6 @@
 		C10010 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				B10018 /* ChartScaler.swift */,
 				B10019 /* AccessibilityHelper.swift */,
 			);
 			path = Utilities;
@@ -266,21 +414,41 @@
 				A10003 /* OnboardingViewModel.swift in Sources */,
 				A10004 /* CalibrationView.swift in Sources */,
 				A10005 /* CalibrationViewModel.swift in Sources */,
-				A10006 /* EyeTestView.swift in Sources */,
-				A10007 /* EyeTestViewModel.swift in Sources */,
-				A10008 /* ChartView.swift in Sources */,
-				A10009 /* EyeCoverPromptView.swift in Sources */,
-				A10010 /* ResultsView.swift in Sources */,
-				A10011 /* ResultsViewModel.swift in Sources */,
 				A10012 /* ARFaceTrackingService.swift in Sources */,
 				A10013 /* DistanceMeasurementService.swift in Sources */,
-				A10014 /* EyeTestScoringService.swift in Sources */,
-				A10015 /* TestSession.swift in Sources */,
-				A10016 /* EyeTestResult.swift in Sources */,
-				A10017 /* VisualAcuityScale.swift in Sources */,
-				A10018 /* ChartScaler.swift in Sources */,
 				0126818B2F662FFE00C3BFAD /* AppDelegate.swift in Sources */,
 				A10019 /* AccessibilityHelper.swift in Sources */,
+				A10021 /* RefractionSession.swift in Sources */,
+				A10022 /* Prescription.swift in Sources */,
+				A10023 /* FarPointMeasurement.swift in Sources */,
+				A10024 /* NearAddTable.swift in Sources */,
+				A10025 /* RefractionCalculationService.swift in Sources */,
+				A10026 /* FarPointTrackingService.swift in Sources */,
+				A10027 /* RefractionCoordinatorView.swift in Sources */,
+				A10028 /* RefractionCoordinatorViewModel.swift in Sources */,
+				A10029 /* SphereTestView.swift in Sources */,
+				A10030 /* SphereTestViewModel.swift in Sources */,
+				A10031 /* DistanceGaugeView.swift in Sources */,
+				A10032 /* LandoltCView.swift in Sources */,
+				A10033 /* PhaseInstructionView.swift in Sources */,
+				A10034 /* EyeCoverPromptView.swift in Sources */,
+				A10035 /* PrescriptionResultsView.swift in Sources */,
+				A10036 /* PrescriptionResultsViewModel.swift in Sources */,
+				A10037 /* FanChartShape.swift in Sources */,
+				A10038 /* CylinderTestViewModel.swift in Sources */,
+				A10039 /* CylinderAxisView.swift in Sources */,
+				A10040 /* CylinderPowerView.swift in Sources */,
+				A10041 /* NearAddView.swift in Sources */,
+				A10042 /* NearAddViewModel.swift in Sources */,
+				A10043 /* IntermediateAddView.swift in Sources */,
+				A10044 /* IntermediateAddViewModel.swift in Sources */,
+				A10045 /* PupillaryDistanceService.swift in Sources */,
+				A10046 /* PDMeasurementView.swift in Sources */,
+				A10047 /* PDMeasurementViewModel.swift in Sources */,
+				A10048 /* MasterEyeView.swift in Sources */,
+				A10049 /* MasterEyeViewModel.swift in Sources */,
+				A10050 /* BinocularBalanceView.swift in Sources */,
+				A10051 /* BinocularBalanceViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

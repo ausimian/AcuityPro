@@ -9,7 +9,7 @@ struct EyeCoverPromptView: View {
         VStack(spacing: 32) {
             Spacer()
 
-            Image(systemName: eyeIcon)
+            Image(systemName: "eye.trianglebadge.exclamationmark")
                 .font(.system(size: 80))
                 .foregroundStyle(.tint)
                 .symbolEffect(.pulse)
@@ -43,13 +43,6 @@ struct EyeCoverPromptView: View {
             .controlSize(.large)
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
-        }
-    }
-
-    private var eyeIcon: String {
-        switch eyeToCover {
-        case .left: return "eye.trianglebadge.exclamationmark"
-        case .right: return "eye.trianglebadge.exclamationmark"
         }
     }
 }

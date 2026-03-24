@@ -1,5 +1,6 @@
 import ARKit
 import Combine
+import simd
 
 /// Manages an ARKit face tracking session, publishing real-time distance
 /// and eye blink values. This is the core sensing layer of the app.
@@ -12,6 +13,11 @@ final class ARFaceTrackingService: NSObject, ObservableObject {
     @Published var leftEyeBlink: Float = 0    // 0.0 (open) to 1.0 (closed)
     @Published var rightEyeBlink: Float = 0
     @Published var faceIsLevel: Bool = false   // True if head tilt < threshold
+
+    /// 3D position of each eye relative to the face anchor, in meters.
+    /// Used for pupillary distance measurement.
+    @Published var leftEyePosition: SIMD3<Float>?
+    @Published var rightEyePosition: SIMD3<Float>?
 
     // MARK: - Configuration
 
@@ -94,12 +100,20 @@ extension ARFaceTrackingService: ARSessionDelegate {
         let roll = atan2(col0.y, col0.x)
         let isLevel = abs(roll) < tiltThresholdRadians
 
+        // Eye positions from eye transforms (relative to face anchor, in meters)
+        let leftEyeCol = faceAnchor.leftEyeTransform.columns.3
+        let rightEyeCol = faceAnchor.rightEyeTransform.columns.3
+        let leftEyePos = SIMD3<Float>(leftEyeCol.x, leftEyeCol.y, leftEyeCol.z)
+        let rightEyePos = SIMD3<Float>(rightEyeCol.x, rightEyeCol.y, rightEyeCol.z)
+
         DispatchQueue.main.async {
             self.distanceCm = smoothed
             self.isTrackingFace = faceAnchor.isTracked
             self.leftEyeBlink = leftBlink
             self.rightEyeBlink = rightBlink
             self.faceIsLevel = isLevel
+            self.leftEyePosition = leftEyePos
+            self.rightEyePosition = rightEyePos
         }
     }
 

@@ -4,6 +4,7 @@ struct OnboardingView: View {
     @ObservedObject var arService: ARFaceTrackingService
     @StateObject private var viewModel = OnboardingViewModel()
     @State private var navigateToTest = false
+    @State private var age: Int = 45
 
     var body: some View {
         NavigationStack {
@@ -19,7 +20,7 @@ struct OnboardingView: View {
                         .font(.largeTitle.bold())
                 }
 
-                Text("A quick visual acuity screening using your iPhone's TrueDepth camera.")
+                Text("A sensor-driven refraction system using your iPhone's TrueDepth camera to measure your refractive error.")
                     .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
@@ -30,6 +31,7 @@ struct OnboardingView: View {
                 } else if viewModel.hasDeniedPermissions {
                     permissionDeniedView
                 } else {
+                    agePickerView
                     startButton
                 }
 
@@ -43,7 +45,7 @@ struct OnboardingView: View {
                     .padding(.bottom, 16)
             }
             .navigationDestination(isPresented: $navigateToTest) {
-                EyeTestView(arService: arService)
+                RefractionCoordinatorView(arService: arService, age: age)
                     .navigationBarBackButtonHidden()
             }
         }
@@ -61,13 +63,31 @@ struct OnboardingView: View {
                 }
             }
         } label: {
-            Text("Begin Eye Test")
+            Text("Begin Refraction Test")
                 .font(.headline)
                 .frame(maxWidth: .infinity)
                 .padding()
         }
         .buttonStyle(.borderedProminent)
         .controlSize(.large)
+        .padding(.horizontal, 40)
+    }
+
+    private var agePickerView: some View {
+        VStack(spacing: 4) {
+            Text("Your Age")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            Picker("Age", selection: $age) {
+                ForEach(18...80, id: \.self) { value in
+                    Text("\(value)").tag(value)
+                }
+            }
+            .pickerStyle(.wheel)
+            .frame(height: 100)
+            .clipped()
+        }
         .padding(.horizontal, 40)
     }
 
