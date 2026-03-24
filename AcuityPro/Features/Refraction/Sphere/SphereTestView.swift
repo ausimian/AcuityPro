@@ -10,7 +10,7 @@ struct SphereTestView: View {
         case .instruction:
             PhaseInstructionView(
                 title: "Sphere Test — \(viewModel.eye.displayName) Eye",
-                description: "You'll see a small target on screen. Move the phone slowly closer and further away until the target becomes sharp and clear, then tap the button to confirm.",
+                description: "You'll see a letter E on screen. Move the phone slowly closer and further away until you can clearly make out the prongs of the E, then tap to confirm.",
                 systemImage: "scope",
                 buttonLabel: "Start"
             ) {
@@ -35,8 +35,9 @@ struct SphereTestView: View {
 
             Spacer()
 
-            // Target stimulus
-            LandoltCView(size: 80, strokeWidth: 16)
+            // Target stimulus — tumbling E scaled to 20/40 angular size
+            TumblingEView(size: viewModel.letterHeight, direction: viewModel.direction)
+                .opacity(viewModel.letterHeight > 0 ? 1 : 0)
                 .padding()
 
             Spacer()
@@ -53,7 +54,7 @@ struct SphereTestView: View {
                 Button {
                     viewModel.confirmClear()
                 } label: {
-                    Text("Target is Clear")
+                    Text("I Can See the E Clearly")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()

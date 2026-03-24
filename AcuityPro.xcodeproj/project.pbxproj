@@ -32,7 +32,7 @@
 		A10029 /* SphereTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029 /* SphereTestView.swift */; };
 		A10030 /* SphereTestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030 /* SphereTestViewModel.swift */; };
 		A10031 /* DistanceGaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10031 /* DistanceGaugeView.swift */; };
-		A10032 /* LandoltCView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10032 /* LandoltCView.swift */; };
+		A10052 /* TumblingEView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10052 /* TumblingEView.swift */; };
 		A10033 /* PhaseInstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10033 /* PhaseInstructionView.swift */; };
 		A10034 /* EyeCoverPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10034 /* EyeCoverPromptView.swift */; };
 		A10035 /* PrescriptionResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10035 /* PrescriptionResultsView.swift */; };
@@ -89,7 +89,7 @@
 		B10029 /* SphereTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphereTestView.swift; sourceTree = "<group>"; };
 		B10030 /* SphereTestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphereTestViewModel.swift; sourceTree = "<group>"; };
 		B10031 /* DistanceGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceGaugeView.swift; sourceTree = "<group>"; };
-		B10032 /* LandoltCView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandoltCView.swift; sourceTree = "<group>"; };
+		B10052 /* TumblingEView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TumblingEView.swift; sourceTree = "<group>"; };
 		B10033 /* PhaseInstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseInstructionView.swift; sourceTree = "<group>"; };
 		B10034 /* EyeCoverPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeCoverPromptView.swift; sourceTree = "<group>"; };
 		B10035 /* PrescriptionResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrescriptionResultsView.swift; sourceTree = "<group>"; };
@@ -287,7 +287,7 @@
 		C10015 /* TargetViews */ = {
 			isa = PBXGroup;
 			children = (
-				B10032 /* LandoltCView.swift */,
+				B10052 /* TumblingEView.swift */,
 				B10037 /* FanChartShape.swift */,
 			);
 			path = TargetViews;
@@ -429,7 +429,7 @@
 				A10029 /* SphereTestView.swift in Sources */,
 				A10030 /* SphereTestViewModel.swift in Sources */,
 				A10031 /* DistanceGaugeView.swift in Sources */,
-				A10032 /* LandoltCView.swift in Sources */,
+				A10052 /* TumblingEView.swift in Sources */,
 				A10033 /* PhaseInstructionView.swift in Sources */,
 				A10034 /* EyeCoverPromptView.swift in Sources */,
 				A10035 /* PrescriptionResultsView.swift in Sources */,
