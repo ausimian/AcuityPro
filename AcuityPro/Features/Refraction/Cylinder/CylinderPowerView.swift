@@ -11,7 +11,7 @@ struct CylinderPowerView: View {
         case .instruction:
             PhaseInstructionView(
                 title: "Cylinder Power — \(viewModel.eye.displayName) Eye",
-                description: "You'll see a single line at \(viewModel.perpendicularAxis)\u{00B0}. Move the phone until this line becomes sharp and clear.",
+                description: "You'll see a pair of short parallel lines at \(viewModel.perpendicularAxis)\u{00B0}. Move the phone until both lines become sharp and clearly separated.",
                 systemImage: "line.diagonal",
                 buttonLabel: "Start"
             ) {
@@ -51,11 +51,17 @@ struct CylinderPowerView: View {
 
             Spacer()
 
-            // Single line at the perpendicular axis
-            Rectangle()
-                .fill(Color.primary)
-                .frame(width: 2, height: 200)
-                .rotationEffect(.degrees(Double(viewModel.perpendicularAxis)))
+            // Block lines (Fan & Block test) — pair of short parallel lines
+            // at the perpendicular meridian
+            VStack(spacing: 8) {
+                Rectangle()
+                    .fill(Color.primary)
+                    .frame(width: 80, height: 2)
+                Rectangle()
+                    .fill(Color.primary)
+                    .frame(width: 80, height: 2)
+            }
+            .rotationEffect(.degrees(Double(viewModel.perpendicularAxis)))
 
             Spacer()
 
@@ -68,7 +74,7 @@ struct CylinderPowerView: View {
             Button {
                 viewModel.confirmPowerClear()
             } label: {
-                Text("Line is Clear")
+                Text("Lines are Clear")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()

@@ -10,7 +10,7 @@ struct SphereTestView: View {
         case .instruction:
             PhaseInstructionView(
                 title: "Sphere Test — \(viewModel.eye.displayName) Eye",
-                description: "You'll see a letter E on screen. Move the phone slowly closer and further away until you can clearly make out the prongs of the E, then tap to confirm.",
+                description: "You'll see a letter E on screen. If it looks blurry, move the phone slowly closer or further away until the prongs of the E become sharp, then tap to confirm. If the E is already clear, let us know.",
                 systemImage: "scope",
                 buttonLabel: "Start"
             ) {
@@ -54,7 +54,7 @@ struct SphereTestView: View {
                 Button {
                     viewModel.confirmClear()
                 } label: {
-                    Text("I Can See the E Clearly")
+                    Text("I Found the Clear Point")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -65,7 +65,7 @@ struct SphereTestView: View {
                 Button {
                     viewModel.reportAlwaysClear()
                 } label: {
-                    Text("I can't find a blur point")
+                    Text("The E is already clear")
                         .font(.subheadline)
                 }
                 .buttonStyle(.bordered)
