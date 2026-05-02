@@ -12,7 +12,26 @@ final class SphereTestViewModel: ObservableObject {
     @Published var isStable: Bool = false
     @Published var step: PhaseStepState = .instruction
     @Published var letterHeight: CGFloat = 0
+    @Published var blurRadius: CGFloat = 0
+    /// True once the user has been pinned at the ~25 cm ARKit floor for
+    /// `floorHoldDuration` seconds — they likely can't reach their far point
+    /// inside the device's measurable range.
+    @Published var isAtFloor: Bool = false
     private var hasReceivedFirstDistance = false
+    private var floorHoldStartTime: Date?
+
+    /// Distance-dependent fog: blur tapers from `maxBlurRadius` at the
+    /// 50 cm calibration start to 0 at `blurEndDistanceCm`. Keeps a small
+    /// amount of fog through most of the test range so accommodation stays
+    /// relaxed, without a jarringly soft start.
+    private static let maxBlurRadius: CGFloat = 0.8
+    private static let blurStartDistanceCm: Float = 50
+    private static let blurEndDistanceCm: Float = 18
+
+    /// ARKit face tracking clamps near ~22–25 cm. Anyone whose far point is
+    /// closer than this can't be measured by the device.
+    private static let floorDistanceCm: Float = 27
+    private static let floorHoldDuration: TimeInterval = 2.0
 
     // MARK: - Properties
 
@@ -39,6 +58,8 @@ final class SphereTestViewModel: ObservableObject {
             .sink { [weak self] dist in
                 self?.distanceCm = dist
                 self?.updateLetterHeight(distanceCm: dist)
+                self?.updateBlur(distanceCm: dist)
+                self?.updateFloorHold(distanceCm: dist)
             }
             .store(in: &cancellables)
 
@@ -71,6 +92,30 @@ final class SphereTestViewModel: ObservableObject {
         letterHeight = max(points, 4)  // floor at 4pt to remain visible
     }
 
+    private func updateBlur(distanceCm: Float) {
+        let start = Self.blurStartDistanceCm
+        let end = Self.blurEndDistanceCm
+        let clamped = min(max(distanceCm, end), start)
+        let t = CGFloat((clamped - end) / (start - end))   // 0 at end, 1 at start
+        blurRadius = Self.maxBlurRadius * t
+    }
+
+    private func updateFloorHold(distanceCm: Float) {
+        guard distanceCm > 0 else { return }
+        if distanceCm <= Self.floorDistanceCm {
+            if let start = floorHoldStartTime {
+                if Date().timeIntervalSince(start) >= Self.floorHoldDuration {
+                    isAtFloor = true
+                }
+            } else {
+                floorHoldStartTime = Date()
+            }
+        } else {
+            floorHoldStartTime = nil
+            isAtFloor = false
+        }
+    }
+
     // MARK: - Device Display
 
     private static var pointsPerMM: CGFloat {
@@ -99,6 +144,19 @@ final class SphereTestViewModel: ObservableObject {
             eye: eye,
             meridian: .sphere
         )
+        step = .complete
+    }
+
+    /// User reports they couldn't reach their far point — the phone hit the
+    /// ARKit tracking floor while the E was still blurry. Records the floor
+    /// distance with `outOfRange = true` so the result screen can flag it.
+    func reportOutOfRange() {
+        confirmedMeasurement = trackingService.confirmFarPoint(
+            eye: eye,
+            meridian: .sphere,
+            outOfRange: true
+        )
+        HapticFeedback.distanceLocked()
         step = .complete
     }
 }

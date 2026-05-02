@@ -42,9 +42,29 @@ enum PhaseStepState: Equatable {
     case complete
 }
 
+/// Self-reported symptom profile collected during onboarding.
+/// Used to flag users whose refractive error TrueDepth under-detects
+/// (hyperopes cannot produce a measurable far point inside the test range).
+enum VisionSymptomProfile: String, Codable, CaseIterable {
+    case myope
+    case hyperope
+    case emmetrope
+    case agingHyperope
+
+    var prompt: String {
+        switch self {
+        case .myope:          return "Near is clear, far is harder"
+        case .hyperope:       return "Far is clear, near is harder"
+        case .emmetrope:      return "Both are mostly clear"
+        case .agingHyperope:  return "Both are blurry"
+        }
+    }
+}
+
 /// Accumulates all measurements collected during a refraction session.
 struct RefractionSession {
     var age: Int = 0
+    var symptomProfile: VisionSymptomProfile?
 
     // Sphere far-point measurements
     var rightSphereFarPoint: FarPointMeasurement?

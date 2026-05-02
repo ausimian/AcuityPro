@@ -19,6 +19,9 @@ final class BinocularBalanceViewModel: ObservableObject {
         currentIteration = 0
     }
 
+    /// Total rounds in the test (exposed for the progress indicator).
+    var totalIterations: Int { maxIterations }
+
     /// User reports which eye sees more clearly.
     /// The clearer eye gets a slight minus adjustment (fog) to balance.
     func reportClearer(eye: Eye?) {
@@ -34,6 +37,8 @@ final class BinocularBalanceViewModel: ObservableObject {
         if currentIteration >= maxIterations || eye == nil {
             HapticFeedback.distanceLocked()
             step = .complete
+        } else {
+            HapticFeedback.letterTapped()
         }
     }
 }

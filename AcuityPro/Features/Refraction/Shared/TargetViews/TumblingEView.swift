@@ -6,11 +6,16 @@ import SwiftUI
 struct TumblingEView: View {
     let size: CGFloat
     let direction: TumblingEDirection
+    /// Gaussian blur radius applied to the rendered glyph in points.
+    /// Used to fog accommodation during sphere measurement — see optometrist
+    /// rationale (start from blur, like focusing a telescope eyepiece).
+    var blurRadius: CGFloat = 0
 
     var body: some View {
         TumblingEShape()
             .fill(Color.primary)
             .frame(width: size, height: size)
+            .blur(radius: blurRadius)
             .rotationEffect(direction.rotation)
     }
 }

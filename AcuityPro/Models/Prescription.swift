@@ -7,6 +7,9 @@ struct EyePrescription: Equatable {
     let axis: Int               // degrees 1-180 (0 if no cylinder)
     let nearAdd: Double?        // positive dioptres for reading
     let intermediateAdd: Double? // positive dioptres for desktop
+    /// True when the sphere far-point hit ARKit's ~25 cm tracking floor —
+    /// the recorded sphere is a lower bound, not an exact reading.
+    var sphereOutOfRange: Bool = false
 }
 
 /// Complete prescription output from a refraction session.
@@ -21,6 +24,7 @@ struct FullPrescription: Identifiable {
     let monoPdLeftMm: Double
     let age: Int
     let deviceModel: String
+    let symptomProfile: VisionSymptomProfile?
 
     init(
         rightEye: EyePrescription,
@@ -31,6 +35,7 @@ struct FullPrescription: Identifiable {
         monoPdLeftMm: Double,
         age: Int,
         deviceModel: String,
+        symptomProfile: VisionSymptomProfile? = nil,
         date: Date = Date()
     ) {
         self.id = UUID()
@@ -43,6 +48,7 @@ struct FullPrescription: Identifiable {
         self.monoPdLeftMm = monoPdLeftMm
         self.age = age
         self.deviceModel = deviceModel
+        self.symptomProfile = symptomProfile
     }
 
     /// Plain text summary suitable for sharing or printing.
