@@ -66,11 +66,20 @@ struct FanChartView: View {
         }
     }
 
-    /// Converts a line index to axis degrees (1-180 range, optometry convention).
+    /// Converts a line index to TABO axis degrees (1–180, optometric convention).
+    ///
+    /// TABO: axis 0/180 is the horizontal meridian and axis 90 is the vertical
+    /// meridian, measured CCW from the patient's right horizontal.
+    ///
+    /// `FanLine` renders a tall (vertical) rectangle and applies SwiftUI's
+    /// `rotationEffect`, which rotates *clockwise* on screen. So index 0 with
+    /// rotation 0° draws vertical (TABO axis 90), and rotation increases CW
+    /// while TABO axis decreases — hence `90 − rotation` (mod 180).
     private func axisDegrees(for index: Int) -> Int {
         let stepDegrees = 180 / lineCount
-        let degrees = (index * stepDegrees) + stepDegrees  // 1-based, avoid 0
-        return min(degrees, 180)
+        let rotation = index * stepDegrees                 // 0..165 for 12 lines
+        let axis = ((90 - rotation) % 180 + 180) % 180     // 0..179
+        return axis == 0 ? 180 : axis
     }
 }
 
