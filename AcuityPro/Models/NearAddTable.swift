@@ -15,8 +15,10 @@ enum NearAddTable {
         }
     }
 
-    /// Intermediate addition is 50% of the near addition.
-    static func intermediateAdd(forAge age: Int) -> Double {
-        nearAdd(forAge: age) * 0.5
+    /// Intermediate addition derived from near add by deducting 40%
+    /// (per consultant optometrist guidance — desktop distance ≈ 1.67×
+    /// reading distance).
+    static func intermediateAdd(fromNearAdd nearAdd: Double) -> Double {
+        nearAdd * 0.6
     }
 }

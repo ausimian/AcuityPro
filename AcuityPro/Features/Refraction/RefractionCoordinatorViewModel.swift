@@ -20,6 +20,11 @@ final class RefractionCoordinatorViewModel: ObservableObject {
     // MARK: - Phase Transitions
 
     /// Ordered sequence of all refraction phases.
+    ///
+    /// `binocularBalance`, `intermediateAdd`, and `masterEye` are intentionally
+    /// omitted in v2.3 (per optometrist feedback). The cases remain on
+    /// `RefractionPhase` and the corresponding views remain in the codebase so
+    /// they can be re-introduced without recovery work.
     private static let phaseOrder: [RefractionPhase] = [
         .calibration,
         .sphereTest(eye: .right),
@@ -28,10 +33,7 @@ final class RefractionCoordinatorViewModel: ObservableObject {
         .sphereTest(eye: .left),
         .cylinderAxisTest(eye: .left),
         .cylinderPowerTest(eye: .left),
-        .binocularBalance,
         .nearAdd,
-        .intermediateAdd,
-        .masterEye,
         .pupillaryDistance,
         .finalRx
     ]
@@ -118,11 +120,6 @@ final class RefractionCoordinatorViewModel: ObservableObject {
 
     func recordNearDistance(_ distanceCm: Float) {
         session.comfortableReadingDistanceCm = distanceCm
-        advanceToNextPhase()
-    }
-
-    func recordIntermediateDistance(_ distanceCm: Float) {
-        session.desktopViewingDistanceCm = distanceCm
         advanceToNextPhase()
     }
 
