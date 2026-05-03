@@ -76,9 +76,8 @@ struct RefractionSession {
     var leftCylinderAxis: Int?
     var leftCylinderFarPoint: FarPointMeasurement?
 
-    // Near / intermediate add
+    // Near reading distance (informational; near add is age-table-based)
     var comfortableReadingDistanceCm: Float?
-    var desktopViewingDistanceCm: Float?
 
     // Binocular balance adjustments (delta applied to sphere)
     var rightSphereAdjustment: Double = 0

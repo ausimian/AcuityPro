@@ -41,11 +41,6 @@ struct RefractionCoordinatorView: View {
                     viewModel.advanceToNextPhase()
                 }
 
-            case .binocularBalance:
-                BinocularBalanceView { rightAdj, leftAdj in
-                    viewModel.recordBinocularBalance(rightAdjustment: rightAdj, leftAdjustment: leftAdj)
-                }
-
             case .nearAdd:
                 NearAddView(
                     arService: arService,
@@ -54,17 +49,12 @@ struct RefractionCoordinatorView: View {
                     viewModel.recordNearDistance(distanceCm)
                 }
 
-            case .intermediateAdd:
-                IntermediateAddView(
-                    arService: arService,
-                    viewModel: IntermediateAddViewModel(age: viewModel.session.age)
-                ) { distanceCm in
-                    viewModel.recordIntermediateDistance(distanceCm)
-                }
-
-            case .masterEye:
-                MasterEyeView(arService: arService) { dominant in
-                    viewModel.recordDominantEye(dominant)
+            case .binocularBalance, .intermediateAdd, .masterEye:
+                // Phases removed from phaseOrder in v2.3 — should never render.
+                // Kept as enum cases so the corresponding view files remain
+                // compilable for a future re-introduction.
+                Color.clear.onAppear {
+                    viewModel.advanceToNextPhase()
                 }
 
             case .pupillaryDistance:

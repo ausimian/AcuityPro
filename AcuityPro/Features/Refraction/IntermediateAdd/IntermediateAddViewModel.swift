@@ -41,6 +41,6 @@ final class IntermediateAddViewModel: ObservableObject {
     }
 
     var computedIntermediateAdd: Double {
-        NearAddTable.intermediateAdd(forAge: age)
+        NearAddTable.intermediateAdd(fromNearAdd: NearAddTable.nearAdd(forAge: age))
     }
 }

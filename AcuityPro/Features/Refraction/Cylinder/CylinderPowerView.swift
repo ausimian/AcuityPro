@@ -52,7 +52,12 @@ struct CylinderPowerView: View {
             Spacer()
 
             // Block lines (Fan & Block test) — pair of short parallel lines
-            // at the perpendicular meridian
+            // at the perpendicular meridian.
+            //
+            // The base rectangles are horizontal (width 80, height 2 → TABO
+            // axis 180). Rendering a TABO axis `a` from a horizontal base
+            // requires a SwiftUI rotation of `180 − a` (CW on screen, while
+            // TABO grows CCW from horizontal).
             VStack(spacing: 8) {
                 Rectangle()
                     .fill(Color.primary)
@@ -61,7 +66,7 @@ struct CylinderPowerView: View {
                     .fill(Color.primary)
                     .frame(width: 80, height: 2)
             }
-            .rotationEffect(.degrees(Double(viewModel.perpendicularAxis)))
+            .rotationEffect(.degrees(Double(180 - viewModel.perpendicularAxis)))
 
             Spacer()
 

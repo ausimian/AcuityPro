@@ -25,9 +25,9 @@ struct RefractionCalculationService {
         NearAddTable.nearAdd(forAge: age)
     }
 
-    /// Intermediate addition (50% of near add).
-    func intermediateAdd(age: Int) -> Double {
-        NearAddTable.intermediateAdd(forAge: age)
+    /// Intermediate addition (60% of near add — desktop ≈ 0.6 × reading distance).
+    func intermediateAdd(fromNearAdd nearAdd: Double) -> Double {
+        NearAddTable.intermediateAdd(fromNearAdd: nearAdd)
     }
 
     /// Compiles a full prescription from all session measurements.
@@ -59,8 +59,8 @@ struct RefractionCalculationService {
             leftAxis = 0
         }
 
-        let nAdd = session.age >= 40 ? nearAdd(age: session.age) : nil as Double?
-        let iAdd = session.age >= 40 ? intermediateAdd(age: session.age) : nil as Double?
+        let nAdd: Double? = session.age >= 40 ? nearAdd(age: session.age) : nil
+        let iAdd: Double? = nAdd.map(intermediateAdd(fromNearAdd:))
 
         return FullPrescription(
             rightEye: EyePrescription(
