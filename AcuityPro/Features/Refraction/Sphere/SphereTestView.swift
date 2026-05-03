@@ -10,7 +10,7 @@ struct SphereTestView: View {
         case .instruction:
             PhaseInstructionView(
                 title: "Sphere Test — \(viewModel.eye.displayName) Eye",
-                description: "You'll see a letter E on screen. If it looks blurry, move the phone slowly closer or further away until the prongs of the E become sharp, then tap to confirm. If the E is already clear, let us know.",
+                description: "Start at arm's length (about 50 cm). A slightly fogged letter E will appear. Slowly bring the phone closer — stop and tap the moment the prongs become sharp. If the E is already clear at arm's length, let us know.",
                 systemImage: "scope",
                 buttonLabel: "Start"
             ) {
@@ -35,10 +35,16 @@ struct SphereTestView: View {
 
             Spacer()
 
-            // Target stimulus — tumbling E scaled to 20/40 angular size
-            TumblingEView(size: viewModel.letterHeight, direction: viewModel.direction)
-                .opacity(viewModel.letterHeight > 0 ? 1 : 0)
-                .padding()
+            // Target stimulus — tumbling E scaled to 20/40 angular size.
+            // Blur tapers from a small starting fog at 50 cm to zero as
+            // the user moves the phone closer.
+            TumblingEView(
+                size: viewModel.letterHeight,
+                direction: viewModel.direction,
+                blurRadius: viewModel.blurRadius
+            )
+            .opacity(viewModel.letterHeight > 0 ? 1 : 0)
+            .padding()
 
             Spacer()
 
@@ -48,6 +54,15 @@ struct SphereTestView: View {
                 isStable: viewModel.isStable
             )
             .padding(.bottom, 20)
+
+            // Out-of-range hint when the phone has been pinned at the
+            // ARKit ~25 cm floor for a couple of seconds.
+            if viewModel.isAtFloor {
+                outOfRangeHint
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 8)
+                    .transition(.opacity)
+            }
 
             // Action buttons
             VStack(spacing: 12) {
@@ -69,10 +84,34 @@ struct SphereTestView: View {
                         .font(.subheadline)
                 }
                 .buttonStyle(.bordered)
+
+                if viewModel.isAtFloor {
+                    Button {
+                        viewModel.reportOutOfRange()
+                    } label: {
+                        Text("Still blurry — out of range")
+                            .font(.subheadline)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.orange)
+                }
             }
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
+            .animation(.easeInOut(duration: 0.2), value: viewModel.isAtFloor)
         }
+    }
+
+    private var outOfRangeHint: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(.orange)
+            Text("The phone can't measure closer than about 25 cm. If the E is still blurry, your prescription may be stronger than this screening can detect.")
+                .font(.footnote)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(10)
+        .background(Color.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 10))
     }
 
     private var header: some View {

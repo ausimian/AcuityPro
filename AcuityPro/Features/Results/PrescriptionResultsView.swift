@@ -18,6 +18,14 @@ struct PrescriptionResultsView: View {
                 Text("Dominant Eye: \(rx.dominantEye.displayName)")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
+
+                if shouldShowHyperopeWarning(rx.symptomProfile) {
+                    hyperopeWarning
+                }
+
+                if outOfRangeEyes(rx).isEmpty == false {
+                    outOfRangeWarning(eyes: outOfRangeEyes(rx))
+                }
             }
 
             Spacer()
@@ -118,5 +126,49 @@ struct PrescriptionResultsView: View {
 
     private func formatDioptre(_ value: Double) -> String {
         String(format: "%+.2f", value)
+    }
+
+    private func shouldShowHyperopeWarning(_ profile: VisionSymptomProfile?) -> Bool {
+        profile == .hyperope || profile == .agingHyperope
+    }
+
+    private var hyperopeWarning: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(.orange)
+                .font(.title3)
+
+            Text("Based on your answers, you may be long-sighted (hyperopia). TrueDepth-based measurement under-detects plus prescriptions — please see a professional for confirmation.")
+                .font(.footnote)
+                .foregroundStyle(.primary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(12)
+        .background(Color.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 10))
+        .padding(.horizontal, 24)
+    }
+
+    private func outOfRangeEyes(_ rx: FullPrescription) -> [String] {
+        var eyes: [String] = []
+        if rx.rightEye.sphereOutOfRange { eyes.append("right") }
+        if rx.leftEye.sphereOutOfRange { eyes.append("left") }
+        return eyes
+    }
+
+    private func outOfRangeWarning(eyes: [String]) -> some View {
+        let label = eyes.count == 2 ? "Both eyes" : "\(eyes[0].capitalized) eye"
+        return HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(.orange)
+                .font(.title3)
+
+            Text("\(label) exceeded the screening range — the recorded sphere is a lower bound. Your prescription is likely stronger; please see a professional for an accurate measurement.")
+                .font(.footnote)
+                .foregroundStyle(.primary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(12)
+        .background(Color.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 10))
+        .padding(.horizontal, 24)
     }
 }

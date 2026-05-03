@@ -5,6 +5,7 @@ import SwiftUI
 struct RefractionCoordinatorView: View {
     @ObservedObject var arService: ARFaceTrackingService
     let age: Int
+    let symptomProfile: VisionSymptomProfile?
     @StateObject private var viewModel = RefractionCoordinatorViewModel()
 
     var body: some View {
@@ -82,6 +83,7 @@ struct RefractionCoordinatorView: View {
         .animation(.easeInOut(duration: 0.3), value: viewModel.currentPhase)
         .onAppear {
             viewModel.session.age = age
+            viewModel.session.symptomProfile = symptomProfile
         }
     }
 

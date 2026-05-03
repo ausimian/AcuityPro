@@ -68,21 +68,24 @@ struct RefractionCalculationService {
                 cylinder: roundToQuarter(rightCyl),
                 axis: rightAxis,
                 nearAdd: nAdd,
-                intermediateAdd: iAdd
+                intermediateAdd: iAdd,
+                sphereOutOfRange: session.rightSphereFarPoint?.outOfRange ?? false
             ),
             leftEye: EyePrescription(
                 sphere: roundToQuarter(leftSphere),
                 cylinder: roundToQuarter(leftCyl),
                 axis: leftAxis,
                 nearAdd: nAdd,
-                intermediateAdd: iAdd
+                intermediateAdd: iAdd,
+                sphereOutOfRange: session.leftSphereFarPoint?.outOfRange ?? false
             ),
             dominantEye: session.dominantEye ?? .right,
             pdMm: session.pdMm ?? 63.0,
             monoPdRightMm: session.monoPdRightMm ?? 31.5,
             monoPdLeftMm: session.monoPdLeftMm ?? 31.5,
             age: session.age,
-            deviceModel: deviceModel
+            deviceModel: deviceModel,
+            symptomProfile: session.symptomProfile
         )
     }
 

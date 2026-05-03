@@ -3,8 +3,9 @@ import SwiftUI
 struct OnboardingView: View {
     @ObservedObject var arService: ARFaceTrackingService
     @StateObject private var viewModel = OnboardingViewModel()
-    @State private var navigateToTest = false
+    @State private var navigateToSymptom = false
     @State private var age: Int = 45
+    @State private var symptomProfile: VisionSymptomProfile?
 
     var body: some View {
         NavigationStack {
@@ -20,11 +21,17 @@ struct OnboardingView: View {
                         .font(.largeTitle.bold())
                 }
 
-                Text("A sensor-driven refraction system using your iPhone's TrueDepth camera to measure your refractive error.")
-                    .font(.body)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 40)
+                VStack(spacing: 4) {
+                    Text("Check your vision in 60 seconds")
+                        .font(.title3.bold())
+                        .multilineTextAlignment(.center)
+
+                    Text("Powered by iPhone technology")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(.horizontal, 40)
 
                 if !viewModel.deviceSupported {
                     unsupportedDeviceView
@@ -32,7 +39,7 @@ struct OnboardingView: View {
                     permissionDeniedView
                 } else {
                     agePickerView
-                    startButton
+                    continueButton
                 }
 
                 Spacer()
@@ -44,9 +51,12 @@ struct OnboardingView: View {
                     .padding(.horizontal, 32)
                     .padding(.bottom, 16)
             }
-            .navigationDestination(isPresented: $navigateToTest) {
-                RefractionCoordinatorView(arService: arService, age: age)
-                    .navigationBarBackButtonHidden()
+            .navigationDestination(isPresented: $navigateToSymptom) {
+                SymptomQuestionView(
+                    arService: arService,
+                    age: age,
+                    symptomProfile: $symptomProfile
+                )
             }
         }
         .onAppear {
@@ -54,16 +64,16 @@ struct OnboardingView: View {
         }
     }
 
-    private var startButton: some View {
+    private var continueButton: some View {
         Button {
             Task {
                 await viewModel.requestAllPermissions()
                 if viewModel.allPermissionsGranted {
-                    navigateToTest = true
+                    navigateToSymptom = true
                 }
             }
         } label: {
-            Text("Begin Refraction Test")
+            Text("Continue")
                 .font(.headline)
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -85,7 +95,7 @@ struct OnboardingView: View {
                 }
             }
             .pickerStyle(.wheel)
-            .frame(height: 100)
+            .frame(height: 120)
             .clipped()
         }
         .padding(.horizontal, 40)

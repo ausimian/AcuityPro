@@ -42,11 +42,12 @@ final class FarPointTrackingService: ObservableObject {
     }
 
     /// Snapshot the current distance as a confirmed far-point measurement.
-    func confirmFarPoint(eye: Eye, meridian: MeridianType) -> FarPointMeasurement {
+    func confirmFarPoint(eye: Eye, meridian: MeridianType, outOfRange: Bool = false) -> FarPointMeasurement {
         FarPointMeasurement(
             distanceCm: currentDistanceCm,
             eye: eye,
-            meridian: meridian
+            meridian: meridian,
+            outOfRange: outOfRange
         )
     }
 

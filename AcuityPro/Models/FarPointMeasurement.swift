@@ -13,12 +13,21 @@ struct FarPointMeasurement: Equatable {
     let timestamp: Date
     let eye: Eye
     let meridian: MeridianType
+    /// True when the user reported they could not reach the far point because
+    /// the phone hit ARKit's ~25 cm tracking floor — the recorded dioptre is
+    /// a lower bound, not an exact reading.
+    let outOfRange: Bool
 
-    init(distanceCm: Float, eye: Eye, meridian: MeridianType, timestamp: Date = Date()) {
+    init(distanceCm: Float,
+         eye: Eye,
+         meridian: MeridianType,
+         outOfRange: Bool = false,
+         timestamp: Date = Date()) {
         self.distanceCm = distanceCm
         self.dioptres = distanceCm > 0 ? -(100.0 / Double(distanceCm)) : 0
         self.timestamp = timestamp
         self.eye = eye
         self.meridian = meridian
+        self.outOfRange = outOfRange
     }
 }

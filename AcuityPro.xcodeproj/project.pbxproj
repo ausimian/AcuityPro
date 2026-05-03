@@ -52,6 +52,7 @@
 		A10049 /* MasterEyeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10049 /* MasterEyeViewModel.swift */; };
 		A10050 /* BinocularBalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10050 /* BinocularBalanceView.swift */; };
 		A10051 /* BinocularBalanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10051 /* BinocularBalanceViewModel.swift */; };
+		A10053 /* SymptomQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10053 /* SymptomQuestionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		B10001 /* AcuityProApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcuityProApp.swift; sourceTree = "<group>"; };
 		B10002 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		B10003 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		B10053 /* SymptomQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymptomQuestionView.swift; sourceTree = "<group>"; };
 		B10004 /* CalibrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationView.swift; sourceTree = "<group>"; };
 		B10005 /* CalibrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationViewModel.swift; sourceTree = "<group>"; };
 		B10006 /* EyeTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeTestView.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 			children = (
 				B10002 /* OnboardingView.swift */,
 				B10003 /* OnboardingViewModel.swift */,
+				B10053 /* SymptomQuestionView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -449,6 +452,7 @@
 				A10049 /* MasterEyeViewModel.swift in Sources */,
 				A10050 /* BinocularBalanceView.swift in Sources */,
 				A10051 /* BinocularBalanceViewModel.swift in Sources */,
+				A10053 /* SymptomQuestionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -595,7 +599,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = net.ausimian.acuitypro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -625,7 +629,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = net.ausimian.acuitypro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
