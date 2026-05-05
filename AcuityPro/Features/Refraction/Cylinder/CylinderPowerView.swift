@@ -71,15 +71,9 @@ struct CylinderPowerView: View {
         }
     }
 
-    /// Fan-and-block target — two perpendicular blocks of parallel lines.
-    /// The user confirms when both blocks look equally clear (or equally
-    /// blurred); at that point the focal plane sits between the two
-    /// principal meridians of astigmatism.
-    ///
-    /// Each `LineBlock` draws horizontal lines (TABO axis 180). To render
-    /// lines at TABO axis `a` requires a SwiftUI rotation of `180 − a` —
-    /// SwiftUI rotates clockwise on screen while TABO axis grows CCW from
-    /// horizontal.
+    /// `LineBlock` draws horizontal lines (TABO axis 180); rendering at
+    /// TABO axis `a` requires a SwiftUI rotation of `180 − a` (CW on
+    /// screen vs TABO's CCW-from-horizontal convention).
     private var fanAndBlockTarget: some View {
         let principalAxis = viewModel.selectedAxis ?? 90
         return ZStack {
@@ -92,8 +86,6 @@ struct CylinderPowerView: View {
     }
 }
 
-/// A block of seven parallel horizontal lines (~120pt long).
-/// Rotated by callers to represent a specific TABO axis.
 private struct LineBlock: View {
     var body: some View {
         VStack(spacing: 4) {

@@ -106,8 +106,3 @@ struct PDMeasurementView: View {
     }
 }
 
-private extension PDMeasurementViewModel {
-    var viewingDistanceInRange: Bool {
-        targetDistanceCm.contains(distanceCm)
-    }
-}

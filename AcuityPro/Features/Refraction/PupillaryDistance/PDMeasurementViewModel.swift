@@ -16,7 +16,7 @@ final class PDMeasurementViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     /// Calibrated viewing distance for PD capture (cm).
-    /// Distance must be within ±5 cm before Confirm is enabled.
+    /// Distance must be within this range before Confirm is enabled.
     let targetDistanceCm: ClosedRange<Float> = 45...55
 
     struct PDResult {
@@ -30,10 +30,14 @@ final class PDMeasurementViewModel: ObservableObject {
 
     private(set) var confirmedResult: PDResult?
 
+    var viewingDistanceInRange: Bool {
+        targetDistanceCm.contains(distanceCm)
+    }
+
     /// True when the reading is trustworthy enough to commit:
     /// stable, head level, and within the calibrated viewing range.
     var canConfirm: Bool {
-        isStable && monoIsValid && targetDistanceCm.contains(distanceCm)
+        isStable && monoIsValid && viewingDistanceInRange
     }
 
     func startMeasuring(arService: ARFaceTrackingService) {
@@ -43,7 +47,11 @@ final class PDMeasurementViewModel: ObservableObject {
         pdService.$rightMonoPdMm.assign(to: &$rightMonoPdMm)
         pdService.$leftMonoPdMm.assign(to: &$leftMonoPdMm)
         pdService.$isStable.assign(to: &$isStable)
-        pdService.$monoIsValid.assign(to: &$monoIsValid)
+
+        arService.$faceIsLevel
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$monoIsValid)
 
         arService.$distanceCm
             .receive(on: DispatchQueue.main)
@@ -58,17 +66,13 @@ final class PDMeasurementViewModel: ObservableObject {
 
     func confirmPD() {
         guard canConfirm else { return }
-        // Near PD derivation — convergence rule of thumb: subtract ~3 mm
-        // from distance PD when looking at near (~40 cm), with the shift
-        // split evenly across the two mono values. A future PR can replace
-        // this with a working-distance-dependent formula.
         confirmedResult = PDResult(
             total: totalPdMm,
             right: rightMonoPdMm,
             left: leftMonoPdMm,
-            nearTotal: totalPdMm - 3,
-            nearRight: rightMonoPdMm - 1.5,
-            nearLeft: leftMonoPdMm - 1.5
+            nearTotal: totalPdMm - PupillaryDistanceService.nearPdTotalShiftMm,
+            nearRight: rightMonoPdMm - PupillaryDistanceService.nearPdMonoShiftMm,
+            nearLeft: leftMonoPdMm - PupillaryDistanceService.nearPdMonoShiftMm
         )
         HapticFeedback.distanceLocked()
         step = .complete
