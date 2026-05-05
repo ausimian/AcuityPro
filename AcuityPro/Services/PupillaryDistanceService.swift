@@ -3,6 +3,12 @@ import Foundation
 import simd
 
 /// Measures interpupillary distance from ARKit eye transforms.
+///
+/// Total PD updates whenever both eye positions are available — the
+/// inter-eye distance is unaffected by head rotation. Mono PDs only
+/// update when the head is level (roll AND yaw within threshold), since
+/// a turned head shifts both eyes' x-coordinates relative to the face
+/// anchor origin and would otherwise produce asymmetric mono readings.
 @MainActor
 final class PupillaryDistanceService: ObservableObject {
 
@@ -10,15 +16,25 @@ final class PupillaryDistanceService: ObservableObject {
     @Published var rightMonoPdMm: Double = 0
     @Published var leftMonoPdMm: Double = 0
     @Published var isStable: Bool = false
+    @Published var monoIsValid: Bool = false  // true while the face is level
 
     private var pdBuffer: [Double] = []
     private let bufferSize = 30  // Average over ~1 second at 30fps
     private let stabilityThreshold: Double = 0.5  // mm
 
     private var cancellables = Set<AnyCancellable>()
+    private var faceIsLevel: Bool = false
 
     func startMeasuring(arService: ARFaceTrackingService) {
         pdBuffer.removeAll()
+
+        arService.$faceIsLevel
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] level in
+                self?.faceIsLevel = level
+                self?.monoIsValid = level
+            }
+            .store(in: &cancellables)
 
         // Combine left and right eye position updates
         arService.$leftEyePosition
@@ -49,9 +65,13 @@ final class PupillaryDistanceService: ObservableObject {
         let avgPd = pdBuffer.reduce(0, +) / Double(pdBuffer.count)
         totalPdMm = avgPd
 
-        // Mono PDs: X distance from each eye to the face anchor origin (nose bridge)
-        rightMonoPdMm = Double(abs(rightEye.x)) * 1000
-        leftMonoPdMm = Double(abs(leftEye.x)) * 1000
+        // Mono PDs: X distance from each eye to the face anchor origin
+        // (nose bridge). Only refresh while the head is level — a turned
+        // head shifts both eyes' x-positions and would skew the readings.
+        if faceIsLevel {
+            rightMonoPdMm = Double(abs(rightEye.x)) * 1000
+            leftMonoPdMm = Double(abs(leftEye.x)) * 1000
+        }
 
         // Check stability
         if pdBuffer.count >= bufferSize {

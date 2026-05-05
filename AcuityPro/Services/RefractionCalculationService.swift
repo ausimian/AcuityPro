@@ -83,6 +83,9 @@ struct RefractionCalculationService {
             pdMm: session.pdMm ?? 63.0,
             monoPdRightMm: session.monoPdRightMm ?? 31.5,
             monoPdLeftMm: session.monoPdLeftMm ?? 31.5,
+            nearPdMm: session.nearPdMm ?? 60.0,
+            monoNearPdRightMm: session.monoNearPdRightMm ?? 30.0,
+            monoNearPdLeftMm: session.monoNearPdLeftMm ?? 30.0,
             age: session.age,
             deviceModel: deviceModel,
             symptomProfile: session.symptomProfile

@@ -3,14 +3,14 @@ import SwiftUI
 struct PDMeasurementView: View {
     @ObservedObject var arService: ARFaceTrackingService
     @StateObject var viewModel = PDMeasurementViewModel()
-    let onComplete: (_ total: Double, _ right: Double, _ left: Double) -> Void
+    let onComplete: (_ result: PDMeasurementViewModel.PDResult) -> Void
 
     var body: some View {
         switch viewModel.step {
         case .instruction:
             PhaseInstructionView(
                 title: "Pupillary Distance",
-                description: "Look straight at the camera and hold the phone at about 50cm. We'll measure the distance between your pupils.",
+                description: "Hold the phone at about 50 cm with your head level and look straight at the camera. We'll measure the distance between your pupils.",
                 systemImage: "ruler",
                 buttonLabel: "Start"
             ) {
@@ -46,20 +46,12 @@ struct PDMeasurementView: View {
                     }
                     .foregroundStyle(.secondary)
 
-                    if viewModel.isStable {
-                        Label("Reading stable", systemImage: "checkmark.circle.fill")
-                            .foregroundStyle(.green)
-                            .font(.subheadline)
-                    } else {
-                        Text("Look straight at the camera and hold still...")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
+                    statusLabel
                 }
 
                 Spacer()
 
-                Text(String(format: "Distance: %d cm", Int(viewModel.distanceCm)))
+                Text(String(format: "Distance: %d cm  (target ~50 cm)", Int(viewModel.distanceCm)))
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .padding(.bottom, 20)
@@ -74,6 +66,7 @@ struct PDMeasurementView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
+                .disabled(!viewModel.canConfirm)
                 .padding(.horizontal, 40)
                 .padding(.bottom, 40)
             }
@@ -81,9 +74,40 @@ struct PDMeasurementView: View {
         case .complete:
             Color.clear.onAppear {
                 if let result = viewModel.confirmedResult {
-                    onComplete(result.total, result.right, result.left)
+                    onComplete(result)
                 }
             }
         }
+    }
+
+    /// Single-line status hint that explains why Confirm is disabled
+    /// (or confirms the reading is good).
+    @ViewBuilder
+    private var statusLabel: some View {
+        if !viewModel.monoIsValid {
+            Label("Look straight at the camera and keep your head level",
+                  systemImage: "face.dashed")
+                .foregroundStyle(.orange)
+                .font(.subheadline)
+        } else if !viewModel.viewingDistanceInRange {
+            Label("Move to about 50 cm",
+                  systemImage: "arrow.left.and.right")
+                .foregroundStyle(.orange)
+                .font(.subheadline)
+        } else if !viewModel.isStable {
+            Text("Hold still…")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+        } else {
+            Label("Reading looks good", systemImage: "checkmark.circle.fill")
+                .foregroundStyle(.green)
+                .font(.subheadline)
+        }
+    }
+}
+
+private extension PDMeasurementViewModel {
+    var viewingDistanceInRange: Bool {
+        targetDistanceCm.contains(distanceCm)
     }
 }

@@ -58,8 +58,8 @@ struct RefractionCoordinatorView: View {
                 }
 
             case .pupillaryDistance:
-                PDMeasurementView(arService: arService) { total, right, left in
-                    viewModel.recordPD(total: total, right: right, left: left)
+                PDMeasurementView(arService: arService) { result in
+                    viewModel.recordPD(result)
                 }
 
             case .finalRx:

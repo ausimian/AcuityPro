@@ -111,10 +111,13 @@ final class RefractionCoordinatorViewModel: ObservableObject {
         advanceToNextPhase()
     }
 
-    func recordPD(total: Double, right: Double, left: Double) {
-        session.pdMm = total
-        session.monoPdRightMm = right
-        session.monoPdLeftMm = left
+    func recordPD(_ result: PDMeasurementViewModel.PDResult) {
+        session.pdMm = result.total
+        session.monoPdRightMm = result.right
+        session.monoPdLeftMm = result.left
+        session.nearPdMm = result.nearTotal
+        session.monoNearPdRightMm = result.nearRight
+        session.monoNearPdLeftMm = result.nearLeft
         advanceToNextPhase()
     }
 

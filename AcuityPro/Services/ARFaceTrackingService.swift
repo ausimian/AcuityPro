@@ -95,10 +95,16 @@ extension ARFaceTrackingService: ARSessionDelegate {
         let leftBlink = faceAnchor.blendShapes[.eyeBlinkLeft]?.floatValue ?? 0
         let rightBlink = faceAnchor.blendShapes[.eyeBlinkRight]?.floatValue ?? 0
 
-        // Head tilt: extract roll from the face transform
+        // Head pose: extract roll (z-axis tilt) and yaw (left/right turn)
+        // from the face transform. Both must be within threshold for the
+        // face to count as "level" — yaw matters for mono-PD because a
+        // turned head shifts both eyes' x-positions in opposite directions
+        // relative to the face anchor origin (nose bridge).
         let col0 = faceAnchor.transform.columns.0
         let roll = atan2(col0.y, col0.x)
+        let yaw = atan2(col0.z, col0.x)
         let isLevel = abs(roll) < tiltThresholdRadians
+            && abs(yaw) < tiltThresholdRadians
 
         // Eye positions from eye transforms (relative to face anchor, in meters)
         let leftEyeCol = faceAnchor.leftEyeTransform.columns.3

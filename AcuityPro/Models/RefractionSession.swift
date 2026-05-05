@@ -86,8 +86,12 @@ struct RefractionSession {
     // Master eye
     var dominantEye: Eye?
 
-    // Pupillary distance
+    // Pupillary distance — distance values measured at ~50 cm,
+    // near values derived (rule of thumb: −3 mm total, −1.5 mm per side).
     var pdMm: Double?
     var monoPdRightMm: Double?
     var monoPdLeftMm: Double?
+    var nearPdMm: Double?
+    var monoNearPdRightMm: Double?
+    var monoNearPdLeftMm: Double?
 }
