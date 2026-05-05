@@ -11,8 +11,8 @@ struct CylinderPowerView: View {
         case .instruction:
             PhaseInstructionView(
                 title: "Cylinder Power — \(viewModel.eye.displayName) Eye",
-                description: "You'll see a pair of short parallel lines at \(viewModel.perpendicularAxis)\u{00B0}. Move the phone until both lines become sharp and clearly separated.",
-                systemImage: "line.diagonal",
+                description: "You'll see two sets of perpendicular lines. Move the phone until both sets look equally clear or equally blurred.",
+                systemImage: "plus.square.dashed",
                 buttonLabel: "Start"
             ) {
                 viewModel.startPowerTracking(arService: arService)
@@ -37,36 +37,16 @@ struct CylinderPowerView: View {
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text(String(format: "%.2f D", viewModel.estimatedDioptres))
-                        .font(.system(.title3, design: .rounded).bold())
-                        .contentTransition(.numericText())
-                    Text("at \(viewModel.perpendicularAxis)\u{00B0}")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+                Text(String(format: "%.2f D", viewModel.estimatedDioptres))
+                    .font(.system(.title3, design: .rounded).bold())
+                    .contentTransition(.numericText())
             }
             .padding(.horizontal, 24)
             .padding(.top, 16)
 
             Spacer()
 
-            // Block lines (Fan & Block test) — pair of short parallel lines
-            // at the perpendicular meridian.
-            //
-            // The base rectangles are horizontal (width 80, height 2 → TABO
-            // axis 180). Rendering a TABO axis `a` from a horizontal base
-            // requires a SwiftUI rotation of `180 − a` (CW on screen, while
-            // TABO grows CCW from horizontal).
-            VStack(spacing: 8) {
-                Rectangle()
-                    .fill(Color.primary)
-                    .frame(width: 80, height: 2)
-                Rectangle()
-                    .fill(Color.primary)
-                    .frame(width: 80, height: 2)
-            }
-            .rotationEffect(.degrees(Double(180 - viewModel.perpendicularAxis)))
+            fanAndBlockTarget
 
             Spacer()
 
@@ -79,7 +59,7 @@ struct CylinderPowerView: View {
             Button {
                 viewModel.confirmPowerClear()
             } label: {
-                Text("Lines are Clear")
+                Text("Both Sets Look Equal")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -88,6 +68,40 @@ struct CylinderPowerView: View {
             .controlSize(.large)
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
+        }
+    }
+
+    /// Fan-and-block target — two perpendicular blocks of parallel lines.
+    /// The user confirms when both blocks look equally clear (or equally
+    /// blurred); at that point the focal plane sits between the two
+    /// principal meridians of astigmatism.
+    ///
+    /// Each `LineBlock` draws horizontal lines (TABO axis 180). To render
+    /// lines at TABO axis `a` requires a SwiftUI rotation of `180 − a` —
+    /// SwiftUI rotates clockwise on screen while TABO axis grows CCW from
+    /// horizontal.
+    private var fanAndBlockTarget: some View {
+        let principalAxis = viewModel.selectedAxis ?? 90
+        return ZStack {
+            LineBlock()
+                .rotationEffect(.degrees(Double(180 - principalAxis)))
+            LineBlock()
+                .rotationEffect(.degrees(Double(180 - viewModel.perpendicularAxis)))
+        }
+        .frame(width: 200, height: 200)
+    }
+}
+
+/// A block of seven parallel horizontal lines (~120pt long).
+/// Rotated by callers to represent a specific TABO axis.
+private struct LineBlock: View {
+    var body: some View {
+        VStack(spacing: 4) {
+            ForEach(0..<7, id: \.self) { _ in
+                Rectangle()
+                    .fill(Color.primary)
+                    .frame(width: 120, height: 1.5)
+            }
         }
     }
 }
