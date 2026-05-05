@@ -39,9 +39,9 @@ struct NearAddView: View {
 
                 Spacer()
 
-                DistanceGaugeView(
-                    distanceCm: viewModel.distanceCm,
-                    isStable: viewModel.isStable
+                GuidanceCircleView(
+                    state: viewModel.guidanceState,
+                    distanceCm: viewModel.distanceCm
                 )
                 .padding(.bottom, 20)
 

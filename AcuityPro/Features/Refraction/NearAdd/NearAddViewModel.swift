@@ -7,6 +7,7 @@ final class NearAddViewModel: ObservableObject {
     @Published var step: PhaseStepState = .instruction
     @Published var distanceCm: Float = 0
     @Published var isStable: Bool = false
+    @Published var stabilityProgress: Double = 0
 
     private(set) var confirmedDistanceCm: Float?
     private let trackingService = FarPointTrackingService()
@@ -27,7 +28,17 @@ final class NearAddViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: &$isStable)
 
+        trackingService.$stabilityProgress
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$stabilityProgress)
+
         step = .active
+    }
+
+    var guidanceState: GuidanceState {
+        if isStable { return .lockIn }
+        if stabilityProgress < 0.05 { return .idle }
+        return .tracking(progress: stabilityProgress)
     }
 
     func stopTracking() {

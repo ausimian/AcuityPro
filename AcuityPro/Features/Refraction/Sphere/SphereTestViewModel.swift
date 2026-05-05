@@ -10,6 +10,7 @@ final class SphereTestViewModel: ObservableObject {
     @Published var distanceCm: Float = 0
     @Published var estimatedDioptres: Double = 0
     @Published var isStable: Bool = false
+    @Published var stabilityProgress: Double = 0
     @Published var step: PhaseStepState = .instruction
     @Published var letterHeight: CGFloat = 0
     @Published var blurRadius: CGFloat = 0
@@ -71,7 +72,19 @@ final class SphereTestViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: &$isStable)
 
+        trackingService.$stabilityProgress
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$stabilityProgress)
+
         step = .active
+    }
+
+    /// State for `GuidanceCircleView`: pulse while the user gets started,
+    /// fill the arc as the reading settles, snap to lock-in once stable.
+    var guidanceState: GuidanceState {
+        if isStable { return .lockIn }
+        if stabilityProgress < 0.05 { return .idle }
+        return .tracking(progress: stabilityProgress)
     }
 
     private var cancellables = Set<AnyCancellable>()

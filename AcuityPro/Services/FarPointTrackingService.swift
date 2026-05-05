@@ -11,6 +11,10 @@ final class FarPointTrackingService: ObservableObject {
     @Published var currentDistanceCm: Float = 0
     @Published var isStable: Bool = false
     @Published var estimatedDioptres: Double = 0
+    /// 0..1 jitter-derived progress used to drive a guidance-circle arc.
+    /// Grows as the user settles into a stable distance and reaches 1
+    /// when standard deviation across the window hits zero.
+    @Published var stabilityProgress: Double = 0
 
     // MARK: - Configuration
 
@@ -62,7 +66,16 @@ final class FarPointTrackingService: ObservableObject {
             distanceWindow.removeFirst()
         }
 
-        isStable = distanceWindow.count >= stabilityWindowSize && standardDeviation(distanceWindow) < stabilityThresholdCm
+        if distanceWindow.count >= stabilityWindowSize {
+            let stdDev = standardDeviation(distanceWindow)
+            isStable = stdDev < stabilityThresholdCm
+            stabilityProgress = Double(max(0, 1 - stdDev / stabilityThresholdCm))
+        } else {
+            isStable = false
+            // While the window fills, ramp progress slowly from 0 toward
+            // 0.5 so the user sees the guidance ring respond immediately.
+            stabilityProgress = Double(distanceWindow.count) / Double(stabilityWindowSize) * 0.5
+        }
     }
 
     private func standardDeviation(_ values: [Float]) -> Float {
