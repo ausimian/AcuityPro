@@ -4,11 +4,11 @@ import simd
 
 /// Measures interpupillary distance from ARKit eye transforms.
 ///
-/// Total PD updates whenever both eye positions are available — the
-/// inter-eye distance is unaffected by head rotation. Mono PDs only
-/// update when the head is level (roll AND yaw within threshold), since
-/// a turned head shifts both eyes' x-coordinates relative to the face
-/// anchor origin and would otherwise produce asymmetric mono readings.
+/// Total PD and mono PDs both update whenever eye positions are
+/// available. The eye transforms are reported in the face anchor's
+/// local frame, so X coords stay stable under head rotation — no
+/// head-pose gate is needed here. The VM gates *capture* on gaze
+/// alignment to ensure the reading represents a forward-facing pose.
 @MainActor
 final class PupillaryDistanceService: ObservableObject {
 
@@ -29,18 +29,9 @@ final class PupillaryDistanceService: ObservableObject {
     private let stabilityThreshold: Double = 0.5  // mm
 
     private var cancellables = Set<AnyCancellable>()
-    private var faceIsLevel: Bool = false
 
     func startMeasuring(arService: ARFaceTrackingService) {
         pdBuffer.removeAll()
-
-        arService.$faceIsLevel
-            .removeDuplicates()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] level in
-                self?.faceIsLevel = level
-            }
-            .store(in: &cancellables)
 
         // `zip` rather than `combineLatest`: ARFaceTrackingService
         // assigns left then right inside one main-queue block, so
@@ -75,12 +66,10 @@ final class PupillaryDistanceService: ObservableObject {
         totalPdMm = avgPd
 
         // Mono PDs: X distance from each eye to the face anchor origin
-        // (nose bridge). Only refresh while the face is level — a
-        // turned head would skew the readings.
-        if faceIsLevel {
-            rightMonoPdMm = Double(abs(rightEye.x)) * 1000
-            leftMonoPdMm = Double(abs(leftEye.x)) * 1000
-        }
+        // (nose bridge). Eye transforms are in face-local space, so
+        // these stay stable regardless of head pose.
+        rightMonoPdMm = Double(abs(rightEye.x)) * 1000
+        leftMonoPdMm = Double(abs(leftEye.x)) * 1000
 
         if pdBuffer.count >= bufferSize {
             let mean = avgPd
