@@ -4,6 +4,7 @@ import SwiftUI
 /// Switches between phase-specific views based on the current state.
 struct RefractionCoordinatorView: View {
     @ObservedObject var arService: ARFaceTrackingService
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
     let age: Int
     let symptomProfile: VisionSymptomProfile?
     @StateObject private var viewModel = RefractionCoordinatorViewModel()
@@ -12,7 +13,10 @@ struct RefractionCoordinatorView: View {
         Group {
             switch viewModel.currentPhase {
             case .calibration:
-                CalibrationView(arService: arService) {
+                CalibrationView(
+                    arService: arService,
+                    voiceCoordinator: voiceCoordinator
+                ) {
                     viewModel.advanceToNextPhase()
                 }
 
@@ -20,6 +24,7 @@ struct RefractionCoordinatorView: View {
                 coverThenTest(eye: eye) {
                     SphereTestView(
                         arService: arService,
+                        voiceCoordinator: voiceCoordinator,
                         viewModel: SphereTestViewModel(eye: eye)
                     ) { measurement in
                         viewModel.recordSphereMeasurement(measurement, for: eye)
@@ -29,6 +34,7 @@ struct RefractionCoordinatorView: View {
             case .cylinderAxisTest(let eye):
                 CylinderAxisWrapper(
                     arService: arService,
+                    voiceCoordinator: voiceCoordinator,
                     eye: eye
                 ) { axis, measurement in
                     viewModel.recordCylinderResult(axis: axis, measurement: measurement, for: eye)
@@ -44,6 +50,7 @@ struct RefractionCoordinatorView: View {
             case .nearAdd:
                 NearAddView(
                     arService: arService,
+                    voiceCoordinator: voiceCoordinator,
                     viewModel: NearAddViewModel(age: viewModel.session.age)
                 ) { distanceCm in
                     viewModel.recordNearDistance(distanceCm)
@@ -58,8 +65,11 @@ struct RefractionCoordinatorView: View {
                 }
 
             case .pupillaryDistance:
-                PDMeasurementView(arService: arService) { total, right, left in
-                    viewModel.recordPD(total: total, right: right, left: left)
+                PDMeasurementView(
+                    arService: arService,
+                    voiceCoordinator: voiceCoordinator
+                ) { result in
+                    viewModel.recordPD(result)
                 }
 
             case .finalRx:
@@ -80,7 +90,7 @@ struct RefractionCoordinatorView: View {
     /// Wraps a test view with an eye-cover prompt for monocular phases.
     @ViewBuilder
     private func coverThenTest<Content: View>(eye: Eye, @ViewBuilder content: @escaping () -> Content) -> some View {
-        EyeCoverTestWrapper(eyeToCover: eye.opposite) {
+        EyeCoverTestWrapper(eyeToCover: eye.opposite, voiceCoordinator: voiceCoordinator) {
             content()
         }
     }
@@ -89,6 +99,7 @@ struct RefractionCoordinatorView: View {
 /// Handles the eye-cover prompt → test transition for monocular phases.
 private struct EyeCoverTestWrapper<Content: View>: View {
     let eyeToCover: Eye
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
     @ViewBuilder let content: () -> Content
     @State private var ready = false
 
@@ -96,7 +107,7 @@ private struct EyeCoverTestWrapper<Content: View>: View {
         if ready {
             content()
         } else {
-            EyeCoverPromptView(eyeToCover: eyeToCover) {
+            EyeCoverPromptView(eyeToCover: eyeToCover, voiceCoordinator: voiceCoordinator) {
                 ready = true
             }
         }
@@ -108,14 +119,18 @@ private struct EyeCoverTestWrapper<Content: View>: View {
 /// then reports both results via a single callback.
 private struct CylinderAxisWrapper: View {
     @ObservedObject var arService: ARFaceTrackingService
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
     let eye: Eye
     let onComplete: (_ axis: Int?, _ measurement: FarPointMeasurement?) -> Void
 
     @StateObject private var cylVM: CylinderTestViewModel
 
-    init(arService: ARFaceTrackingService, eye: Eye,
+    init(arService: ARFaceTrackingService,
+         voiceCoordinator: VoiceCoordinator,
+         eye: Eye,
          onComplete: @escaping (_ axis: Int?, _ measurement: FarPointMeasurement?) -> Void) {
         self.arService = arService
+        self.voiceCoordinator = voiceCoordinator
         self.eye = eye
         self.onComplete = onComplete
         self._cylVM = StateObject(wrappedValue: CylinderTestViewModel(eye: eye))
@@ -124,9 +139,13 @@ private struct CylinderAxisWrapper: View {
     var body: some View {
         Group {
             if cylVM.axisStep != .complete {
-                CylinderAxisView(viewModel: cylVM)
+                CylinderAxisView(viewModel: cylVM, voiceCoordinator: voiceCoordinator)
             } else if cylVM.selectedAxis != nil && cylVM.powerStep != .complete {
-                CylinderPowerView(arService: arService, viewModel: cylVM)
+                CylinderPowerView(
+                    arService: arService,
+                    voiceCoordinator: voiceCoordinator,
+                    viewModel: cylVM
+                )
             } else {
                 Color.clear.onAppear {
                     onComplete(cylVM.selectedAxis, cylVM.confirmedMeasurement)

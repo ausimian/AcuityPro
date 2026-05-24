@@ -11,6 +11,7 @@ final class CylinderTestViewModel: ObservableObject {
     @Published var distanceCm: Float = 0
     @Published var estimatedDioptres: Double = 0
     @Published var isStable: Bool = false
+    @Published var stabilityProgress: Double = 0
 
     // MARK: - Properties
 
@@ -54,7 +55,17 @@ final class CylinderTestViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: &$isStable)
 
+        trackingService.$stabilityProgress
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$stabilityProgress)
+
         powerStep = .active
+    }
+
+    var guidanceState: GuidanceState {
+        if isStable { return .lockIn }
+        if stabilityProgress < 0.05 { return .idle }
+        return .tracking(progress: stabilityProgress)
     }
 
     func stopPowerTracking() {

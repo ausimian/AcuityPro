@@ -13,6 +13,12 @@ final class ARFaceTrackingService: NSObject, ObservableObject {
     @Published var leftEyeBlink: Float = 0    // 0.0 (open) to 1.0 (closed)
     @Published var rightEyeBlink: Float = 0
     @Published var faceIsLevel: Bool = false   // True if head tilt < threshold
+    /// True when the user's gaze (faceAnchor.lookAtPoint) is within
+    /// `gazeAngleToleranceRadians` of the camera direction in face-local
+    /// space. Used by the PD phase to gate confirm on the user actually
+    /// looking at the on-screen target dot, not just holding the phone
+    /// somewhere in front of them.
+    @Published var isLookingAtCamera: Bool = false
 
     /// 3D position of each eye relative to the face anchor, in meters.
     /// Used for pupillary distance measurement.
@@ -31,6 +37,11 @@ final class ARFaceTrackingService: NSObject, ObservableObject {
     private var distanceBuffer: [Float] = []
     private let bufferSize = 10  // Rolling average over 10 frames
     private let tiltThresholdRadians: Float = 0.15  // ~8.6 degrees
+    /// Angular tolerance between gaze direction and camera direction
+    /// for `isLookingAtCamera` to fire. 18° is forgiving enough for
+    /// real-world holding postures (a reading angle still passes) while
+    /// rejecting clearly off-target gazes.
+    private let gazeAngleToleranceCos: Float = 0.95  // cos(~18°)
 
     // MARK: - Session Control
 
@@ -95,10 +106,16 @@ extension ARFaceTrackingService: ARSessionDelegate {
         let leftBlink = faceAnchor.blendShapes[.eyeBlinkLeft]?.floatValue ?? 0
         let rightBlink = faceAnchor.blendShapes[.eyeBlinkRight]?.floatValue ?? 0
 
-        // Head tilt: extract roll from the face transform
+        // Head pose: extract roll (z-axis tilt) and yaw (left/right turn)
+        // from the face transform. Both must be within threshold for the
+        // face to count as "level" — yaw matters for mono-PD because a
+        // turned head shifts both eyes' x-positions in opposite directions
+        // relative to the face anchor origin (nose bridge).
         let col0 = faceAnchor.transform.columns.0
         let roll = atan2(col0.y, col0.x)
+        let yaw = atan2(col0.z, col0.x)
         let isLevel = abs(roll) < tiltThresholdRadians
+            && abs(yaw) < tiltThresholdRadians
 
         // Eye positions from eye transforms (relative to face anchor, in meters)
         let leftEyeCol = faceAnchor.leftEyeTransform.columns.3
@@ -106,12 +123,35 @@ extension ARFaceTrackingService: ARSessionDelegate {
         let leftEyePos = SIMD3<Float>(leftEyeCol.x, leftEyeCol.y, leftEyeCol.z)
         let rightEyePos = SIMD3<Float>(rightEyeCol.x, rightEyeCol.y, rightEyeCol.z)
 
+        // Gaze vs camera. Project the camera position into face-local
+        // space and compare against lookAtPoint (also face-local) — the
+        // angle between those two direction vectors tells us how far
+        // off-axis the user's gaze is from the camera.
+        var lookingAtCamera = false
+        if let camTransform = session.currentFrame?.camera.transform {
+            let cameraInWorld = SIMD4<Float>(camTransform.columns.3.x,
+                                             camTransform.columns.3.y,
+                                             camTransform.columns.3.z,
+                                             1)
+            let cameraInFace4 = simd_inverse(faceAnchor.transform) * cameraInWorld
+            let cameraInFace = SIMD3<Float>(cameraInFace4.x, cameraInFace4.y, cameraInFace4.z)
+            let lookAt = faceAnchor.lookAtPoint
+            let lookAtLen = simd_length(lookAt)
+            let camLen = simd_length(cameraInFace)
+            if lookAtLen > 1e-4 && camLen > 1e-4 {
+                let cosAngle = simd_dot(lookAt, cameraInFace) / (lookAtLen * camLen)
+                lookingAtCamera = cosAngle > gazeAngleToleranceCos
+            }
+        }
+        let isLookingAtCameraNow = lookingAtCamera
+
         DispatchQueue.main.async {
             self.distanceCm = smoothed
             self.isTrackingFace = faceAnchor.isTracked
             self.leftEyeBlink = leftBlink
             self.rightEyeBlink = rightBlink
             self.faceIsLevel = isLevel
+            self.isLookingAtCamera = isLookingAtCameraNow
             self.leftEyePosition = leftEyePos
             self.rightEyePosition = rightEyePos
         }

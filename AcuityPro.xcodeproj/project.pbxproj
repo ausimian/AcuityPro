@@ -32,6 +32,7 @@
 		A10029 /* SphereTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10029 /* SphereTestView.swift */; };
 		A10030 /* SphereTestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10030 /* SphereTestViewModel.swift */; };
 		A10031 /* DistanceGaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10031 /* DistanceGaugeView.swift */; };
+		A10054 /* GuidanceCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10054 /* GuidanceCircleView.swift */; };
 		A10052 /* TumblingEView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10052 /* TumblingEView.swift */; };
 		A10033 /* PhaseInstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10033 /* PhaseInstructionView.swift */; };
 		A10034 /* EyeCoverPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10034 /* EyeCoverPromptView.swift */; };
@@ -46,6 +47,7 @@
 		A10043 /* IntermediateAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10043 /* IntermediateAddView.swift */; };
 		A10044 /* IntermediateAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10044 /* IntermediateAddViewModel.swift */; };
 		A10045 /* PupillaryDistanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10045 /* PupillaryDistanceService.swift */; };
+		A10055 /* VoiceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10055 /* VoiceCoordinator.swift */; };
 		A10046 /* PDMeasurementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10046 /* PDMeasurementView.swift */; };
 		A10047 /* PDMeasurementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10047 /* PDMeasurementViewModel.swift */; };
 		A10048 /* MasterEyeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10048 /* MasterEyeView.swift */; };
@@ -91,6 +93,7 @@
 		B10029 /* SphereTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphereTestView.swift; sourceTree = "<group>"; };
 		B10030 /* SphereTestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphereTestViewModel.swift; sourceTree = "<group>"; };
 		B10031 /* DistanceGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceGaugeView.swift; sourceTree = "<group>"; };
+		B10054 /* GuidanceCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidanceCircleView.swift; sourceTree = "<group>"; };
 		B10052 /* TumblingEView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TumblingEView.swift; sourceTree = "<group>"; };
 		B10033 /* PhaseInstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseInstructionView.swift; sourceTree = "<group>"; };
 		B10034 /* EyeCoverPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeCoverPromptView.swift; sourceTree = "<group>"; };
@@ -105,6 +108,7 @@
 		B10043 /* IntermediateAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntermediateAddView.swift; sourceTree = "<group>"; };
 		B10044 /* IntermediateAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntermediateAddViewModel.swift; sourceTree = "<group>"; };
 		B10045 /* PupillaryDistanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PupillaryDistanceService.swift; sourceTree = "<group>"; };
+		B10055 /* VoiceCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCoordinator.swift; sourceTree = "<group>"; };
 		B10046 /* PDMeasurementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDMeasurementView.swift; sourceTree = "<group>"; };
 		B10047 /* PDMeasurementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDMeasurementViewModel.swift; sourceTree = "<group>"; };
 		B10048 /* MasterEyeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterEyeView.swift; sourceTree = "<group>"; };
@@ -280,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				B10031 /* DistanceGaugeView.swift */,
+				B10054 /* GuidanceCircleView.swift */,
 				B10033 /* PhaseInstructionView.swift */,
 				B10034 /* EyeCoverPromptView.swift */,
 				C10015 /* TargetViews */,
@@ -304,6 +309,7 @@
 				B10025 /* RefractionCalculationService.swift */,
 				B10026 /* FarPointTrackingService.swift */,
 				B10045 /* PupillaryDistanceService.swift */,
+				B10055 /* VoiceCoordinator.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -432,6 +438,7 @@
 				A10029 /* SphereTestView.swift in Sources */,
 				A10030 /* SphereTestViewModel.swift in Sources */,
 				A10031 /* DistanceGaugeView.swift in Sources */,
+				A10054 /* GuidanceCircleView.swift in Sources */,
 				A10052 /* TumblingEView.swift in Sources */,
 				A10033 /* PhaseInstructionView.swift in Sources */,
 				A10034 /* EyeCoverPromptView.swift in Sources */,
@@ -446,6 +453,7 @@
 				A10043 /* IntermediateAddView.swift in Sources */,
 				A10044 /* IntermediateAddViewModel.swift in Sources */,
 				A10045 /* PupillaryDistanceService.swift in Sources */,
+				A10055 /* VoiceCoordinator.swift in Sources */,
 				A10046 /* PDMeasurementView.swift in Sources */,
 				A10047 /* PDMeasurementViewModel.swift in Sources */,
 				A10048 /* MasterEyeView.swift in Sources */,
@@ -591,6 +599,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "AcuityPro uses the camera to measure your distance from the screen and ensure accurate vision testing.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "AcuityPro uses the microphone for short voice commands so you can run the test hands-free. The test still works with on-screen buttons if you decline.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "AcuityPro listens for short voice cues like 'clear' or 'ready' so you can run the test hands-free. Recognition runs on-device.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -599,7 +609,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = net.ausimian.acuitypro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -621,6 +631,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "AcuityPro uses the camera to measure your distance from the screen and ensure accurate vision testing.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "AcuityPro uses the microphone for short voice commands so you can run the test hands-free. The test still works with on-screen buttons if you decline.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "AcuityPro listens for short voice cues like 'clear' or 'ready' so you can run the test hands-free. Recognition runs on-device.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -629,7 +641,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = net.ausimian.acuitypro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

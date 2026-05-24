@@ -2,19 +2,32 @@ import SwiftUI
 
 struct SphereTestView: View {
     @ObservedObject var arService: ARFaceTrackingService
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
     @StateObject var viewModel: SphereTestViewModel
     let onComplete: (FarPointMeasurement?) -> Void
 
     var body: some View {
         switch viewModel.step {
         case .instruction:
-            PhaseInstructionView(
-                title: "Sphere Test — \(viewModel.eye.displayName) Eye",
-                description: "Start at arm's length (about 50 cm). A slightly fogged letter E will appear. Slowly bring the phone closer — stop and tap the moment the prongs become sharp. If the E is already clear at arm's length, let us know.",
-                systemImage: "scope",
-                buttonLabel: "Start"
-            ) {
-                viewModel.startTracking(arService: arService)
+            if voiceCoordinator.isAuthorized {
+                // Voice mode: skip the static instruction screen and
+                // speak the cue while the active test view is on screen.
+                Color.clear.onAppear {
+                    viewModel.startTracking(arService: arService)
+                    voiceCoordinator.say(
+                        "To start, hold the phone at arm's length, about 50 centimetres, " +
+                        "and move it slowly closer until you can see the E clearly. Then say okay."
+                    )
+                }
+            } else {
+                PhaseInstructionView(
+                    title: "Sphere Test — \(viewModel.eye.displayName) Eye",
+                    description: "Start at arm's length (about 50 cm). A slightly fogged letter E will appear. Slowly bring the phone closer — stop and tap the moment the prongs become sharp. If the E is already clear at arm's length, let us know.",
+                    systemImage: "scope",
+                    buttonLabel: "Start"
+                ) {
+                    viewModel.startTracking(arService: arService)
+                }
             }
 
         case .active, .confirmation:
@@ -48,10 +61,9 @@ struct SphereTestView: View {
 
             Spacer()
 
-            // Distance gauge
-            DistanceGaugeView(
-                distanceCm: viewModel.distanceCm,
-                isStable: viewModel.isStable
+            GuidanceCircleView(
+                state: viewModel.guidanceState,
+                distanceCm: viewModel.distanceCm
             )
             .padding(.bottom, 20)
 
@@ -69,21 +81,13 @@ struct SphereTestView: View {
                 Button {
                     viewModel.confirmClear()
                 } label: {
-                    Text("I Found the Clear Point")
+                    Text("Ok")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
-
-                Button {
-                    viewModel.reportAlwaysClear()
-                } label: {
-                    Text("The E is already clear")
-                        .font(.subheadline)
-                }
-                .buttonStyle(.bordered)
 
                 if viewModel.isAtFloor {
                     Button {
@@ -99,6 +103,16 @@ struct SphereTestView: View {
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
             .animation(.easeInOut(duration: 0.2), value: viewModel.isAtFloor)
+        }
+        .voiceInput(
+            voiceCoordinator,
+            vocabulary: ["okay", "ok", "blurry"]
+        ) { keyword in
+            switch keyword {
+            case "okay", "ok": viewModel.confirmClear()
+            case "blurry":     if viewModel.isAtFloor { viewModel.reportOutOfRange() }
+            default: break
+            }
         }
     }
 

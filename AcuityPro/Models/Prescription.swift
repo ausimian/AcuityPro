@@ -22,6 +22,9 @@ struct FullPrescription: Identifiable {
     let pdMm: Double
     let monoPdRightMm: Double
     let monoPdLeftMm: Double
+    let nearPdMm: Double
+    let monoNearPdRightMm: Double
+    let monoNearPdLeftMm: Double
     let age: Int
     let deviceModel: String
     let symptomProfile: VisionSymptomProfile?
@@ -33,6 +36,9 @@ struct FullPrescription: Identifiable {
         pdMm: Double,
         monoPdRightMm: Double,
         monoPdLeftMm: Double,
+        nearPdMm: Double,
+        monoNearPdRightMm: Double,
+        monoNearPdLeftMm: Double,
         age: Int,
         deviceModel: String,
         symptomProfile: VisionSymptomProfile? = nil,
@@ -46,6 +52,9 @@ struct FullPrescription: Identifiable {
         self.pdMm = pdMm
         self.monoPdRightMm = monoPdRightMm
         self.monoPdLeftMm = monoPdLeftMm
+        self.nearPdMm = nearPdMm
+        self.monoNearPdRightMm = monoNearPdRightMm
+        self.monoNearPdLeftMm = monoNearPdLeftMm
         self.age = age
         self.deviceModel = deviceModel
         self.symptomProfile = symptomProfile
@@ -79,7 +88,8 @@ struct FullPrescription: Identifiable {
         R:    \(formatSph(rightEye.sphere))   \(formatCyl(rightEye.cylinder))    \(formatAxis(rightEye.axis, cyl: rightEye.cylinder))   \(formatAdd(rightEye.nearAdd))
         L:    \(formatSph(leftEye.sphere))   \(formatCyl(leftEye.cylinder))    \(formatAxis(leftEye.axis, cyl: leftEye.cylinder))   \(formatAdd(leftEye.nearAdd))
 
-        PD: \(String(format: "%.1f", pdMm))mm (R: \(String(format: "%.1f", monoPdRightMm)) / L: \(String(format: "%.1f", monoPdLeftMm)))
+        PD (distance): \(String(format: "%.1f", pdMm))mm (R: \(String(format: "%.1f", monoPdRightMm)) / L: \(String(format: "%.1f", monoPdLeftMm)))
+        PD (near):     \(String(format: "%.1f", nearPdMm))mm (R: \(String(format: "%.1f", monoNearPdRightMm)) / L: \(String(format: "%.1f", monoNearPdLeftMm)))
         Dominant Eye: \(dominantEye.displayName)
 
         This is a screening tool only and does not replace a clinical eye examination.

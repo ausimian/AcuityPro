@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OnboardingView: View {
     @ObservedObject var arService: ARFaceTrackingService
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
     @StateObject private var viewModel = OnboardingViewModel()
     @State private var navigateToSymptom = false
     @State private var age: Int = 45
@@ -54,6 +55,7 @@ struct OnboardingView: View {
             .navigationDestination(isPresented: $navigateToSymptom) {
                 SymptomQuestionView(
                     arService: arService,
+                    voiceCoordinator: voiceCoordinator,
                     age: age,
                     symptomProfile: $symptomProfile
                 )
@@ -67,7 +69,7 @@ struct OnboardingView: View {
     private var continueButton: some View {
         Button {
             Task {
-                await viewModel.requestAllPermissions()
+                await viewModel.requestAllPermissions(voice: voiceCoordinator)
                 if viewModel.allPermissionsGranted {
                     navigateToSymptom = true
                 }

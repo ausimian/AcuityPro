@@ -10,6 +10,7 @@ final class SphereTestViewModel: ObservableObject {
     @Published var distanceCm: Float = 0
     @Published var estimatedDioptres: Double = 0
     @Published var isStable: Bool = false
+    @Published var stabilityProgress: Double = 0
     @Published var step: PhaseStepState = .instruction
     @Published var letterHeight: CGFloat = 0
     @Published var blurRadius: CGFloat = 0
@@ -32,6 +33,15 @@ final class SphereTestViewModel: ObservableObject {
     /// closer than this can't be measured by the device.
     private static let floorDistanceCm: Float = 27
     private static let floorHoldDuration: TimeInterval = 2.0
+
+    /// How much closer the phone must have moved from the test's starting
+    /// distance for `confirmClear()` to record a found far-point rather
+    /// than "always clear at arm's length". Sits just above ARKit-smoothed
+    /// hand drift (~1 cm) so a screening user with mild myopia in the
+    /// −2.1 to −2.2 D range still registers — anything higher would
+    /// silently fold real myopia into a plano reading.
+    private static let movementThresholdCm: Float = 2.0
+    private var startingDistanceCm: Float?
 
     // MARK: - Properties
 
@@ -60,6 +70,7 @@ final class SphereTestViewModel: ObservableObject {
                 self?.updateLetterHeight(distanceCm: dist)
                 self?.updateBlur(distanceCm: dist)
                 self?.updateFloorHold(distanceCm: dist)
+                self?.captureStartingDistance(dist)
             }
             .store(in: &cancellables)
 
@@ -71,7 +82,19 @@ final class SphereTestViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: &$isStable)
 
+        trackingService.$stabilityProgress
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$stabilityProgress)
+
         step = .active
+    }
+
+    /// State for `GuidanceCircleView`: pulse while the user gets started,
+    /// fill the arc as the reading settles, snap to lock-in once stable.
+    var guidanceState: GuidanceState {
+        if isStable { return .lockIn }
+        if stabilityProgress < 0.05 { return .idle }
+        return .tracking(progress: stabilityProgress)
     }
 
     private var cancellables = Set<AnyCancellable>()
@@ -128,12 +151,26 @@ final class SphereTestViewModel: ObservableObject {
         trackingService.stopTracking()
     }
 
-    /// User confirms the target is clear at the current distance.
+    /// User confirms the target is clear. If the phone hasn't moved
+    /// meaningfully closer from the test's starting distance, the user
+    /// likely never had to search — record this as plano. Otherwise the
+    /// current distance gives us their far point.
     func confirmClear() {
+        if let start = startingDistanceCm,
+           (start - distanceCm) < Self.movementThresholdCm {
+            reportAlwaysClear()
+            return
+        }
         let measurement = trackingService.confirmFarPoint(eye: eye, meridian: .sphere)
         confirmedMeasurement = measurement
         HapticFeedback.distanceLocked()
         step = .complete
+    }
+
+    private func captureStartingDistance(_ distanceCm: Float) {
+        if startingDistanceCm == nil, distanceCm > 0 {
+            startingDistanceCm = distanceCm
+        }
     }
 
     /// User reports the target is always clear (emmetropia/hyperopia).

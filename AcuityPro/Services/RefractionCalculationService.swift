@@ -3,6 +3,12 @@ import Foundation
 /// Computes refractive power from far-point measurements and age-based additions.
 struct RefractionCalculationService {
 
+    /// Population averages used when a session is missing PD data
+    /// (test was abandoned mid-flow). The near defaults are derived
+    /// from these via `PupillaryDistanceService.nearPd*ShiftMm`.
+    private let defaultDistancePdMm: Double = 63.0
+    private let defaultDistanceMonoPdMm: Double = 31.5
+
     /// Sphere power from far-point distance.
     /// Returns negative dioptres for myopia, 0 for emmetropia.
     /// - Parameter farPointCm: the distance in cm at which the target became clear
@@ -80,9 +86,15 @@ struct RefractionCalculationService {
                 sphereOutOfRange: session.leftSphereFarPoint?.outOfRange ?? false
             ),
             dominantEye: session.dominantEye ?? .right,
-            pdMm: session.pdMm ?? 63.0,
-            monoPdRightMm: session.monoPdRightMm ?? 31.5,
-            monoPdLeftMm: session.monoPdLeftMm ?? 31.5,
+            pdMm: session.pdMm ?? defaultDistancePdMm,
+            monoPdRightMm: session.monoPdRightMm ?? defaultDistanceMonoPdMm,
+            monoPdLeftMm: session.monoPdLeftMm ?? defaultDistanceMonoPdMm,
+            nearPdMm: session.nearPdMm
+                ?? defaultDistancePdMm - PupillaryDistanceService.nearPdTotalShiftMm,
+            monoNearPdRightMm: session.monoNearPdRightMm
+                ?? defaultDistanceMonoPdMm - PupillaryDistanceService.nearPdMonoShiftMm,
+            monoNearPdLeftMm: session.monoNearPdLeftMm
+                ?? defaultDistanceMonoPdMm - PupillaryDistanceService.nearPdMonoShiftMm,
             age: session.age,
             deviceModel: deviceModel,
             symptomProfile: session.symptomProfile

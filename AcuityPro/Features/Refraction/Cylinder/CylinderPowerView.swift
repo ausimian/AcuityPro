@@ -4,18 +4,30 @@ import SwiftUI
 /// User moves phone until this line becomes clear to determine cylinder power.
 struct CylinderPowerView: View {
     @ObservedObject var arService: ARFaceTrackingService
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
     @ObservedObject var viewModel: CylinderTestViewModel
 
     var body: some View {
         switch viewModel.powerStep {
         case .instruction:
-            PhaseInstructionView(
-                title: "Cylinder Power — \(viewModel.eye.displayName) Eye",
-                description: "You'll see a pair of short parallel lines at \(viewModel.perpendicularAxis)\u{00B0}. Move the phone until both lines become sharp and clearly separated.",
-                systemImage: "line.diagonal",
-                buttonLabel: "Start"
-            ) {
-                viewModel.startPowerTracking(arService: arService)
+            if voiceCoordinator.isAuthorized {
+                // Voice mode: skip the static instruction screen and
+                // speak the cue while the active test view is on screen.
+                Color.clear.onAppear {
+                    viewModel.startPowerTracking(arService: arService)
+                    voiceCoordinator.say(
+                        "Move the phone slowly until both sets of lines look equally clear, or equally blurred. Then say okay."
+                    )
+                }
+            } else {
+                PhaseInstructionView(
+                    title: "Cylinder Power — \(viewModel.eye.displayName) Eye",
+                    description: "You'll see two sets of perpendicular lines. Move the phone until both sets look equally clear or equally blurred.",
+                    systemImage: "plus.square.dashed",
+                    buttonLabel: "Start"
+                ) {
+                    viewModel.startPowerTracking(arService: arService)
+                }
             }
 
         case .active, .confirmation:
@@ -37,49 +49,29 @@ struct CylinderPowerView: View {
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text(String(format: "%.2f D", viewModel.estimatedDioptres))
-                        .font(.system(.title3, design: .rounded).bold())
-                        .contentTransition(.numericText())
-                    Text("at \(viewModel.perpendicularAxis)\u{00B0}")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+                Text(String(format: "%.2f D", viewModel.estimatedDioptres))
+                    .font(.system(.title3, design: .rounded).bold())
+                    .contentTransition(.numericText())
             }
             .padding(.horizontal, 24)
             .padding(.top, 16)
 
             Spacer()
 
-            // Block lines (Fan & Block test) — pair of short parallel lines
-            // at the perpendicular meridian.
-            //
-            // The base rectangles are horizontal (width 80, height 2 → TABO
-            // axis 180). Rendering a TABO axis `a` from a horizontal base
-            // requires a SwiftUI rotation of `180 − a` (CW on screen, while
-            // TABO grows CCW from horizontal).
-            VStack(spacing: 8) {
-                Rectangle()
-                    .fill(Color.primary)
-                    .frame(width: 80, height: 2)
-                Rectangle()
-                    .fill(Color.primary)
-                    .frame(width: 80, height: 2)
-            }
-            .rotationEffect(.degrees(Double(180 - viewModel.perpendicularAxis)))
+            fanAndBlockTarget
 
             Spacer()
 
-            DistanceGaugeView(
-                distanceCm: viewModel.distanceCm,
-                isStable: viewModel.isStable
+            GuidanceCircleView(
+                state: viewModel.guidanceState,
+                distanceCm: viewModel.distanceCm
             )
             .padding(.bottom, 20)
 
             Button {
                 viewModel.confirmPowerClear()
             } label: {
-                Text("Lines are Clear")
+                Text("Ok")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -88,6 +80,36 @@ struct CylinderPowerView: View {
             .controlSize(.large)
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
+        }
+        .voiceInput(
+            voiceCoordinator,
+            vocabulary: ["okay", "ok"]
+        ) { _ in viewModel.confirmPowerClear() }
+    }
+
+    /// `LineBlock` draws horizontal lines (TABO axis 180); rendering at
+    /// TABO axis `a` requires a SwiftUI rotation of `180 − a` (CW on
+    /// screen vs TABO's CCW-from-horizontal convention).
+    private var fanAndBlockTarget: some View {
+        let principalAxis = viewModel.selectedAxis ?? 90
+        return ZStack {
+            LineBlock()
+                .rotationEffect(.degrees(Double(180 - principalAxis)))
+            LineBlock()
+                .rotationEffect(.degrees(Double(180 - viewModel.perpendicularAxis)))
+        }
+        .frame(width: 200, height: 200)
+    }
+}
+
+private struct LineBlock: View {
+    var body: some View {
+        VStack(spacing: 4) {
+            ForEach(0..<7, id: \.self) { _ in
+                Rectangle()
+                    .fill(Color.primary)
+                    .frame(width: 120, height: 1.5)
+            }
         }
     }
 }

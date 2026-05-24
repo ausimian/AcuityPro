@@ -3,6 +3,7 @@ import SwiftUI
 /// Overlay shown between test phases, instructing the user to cover one eye.
 struct EyeCoverPromptView: View {
     let eyeToCover: Eye
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
     let onReady: () -> Void
 
     var body: some View {
@@ -34,7 +35,7 @@ struct EyeCoverPromptView: View {
             Button {
                 onReady()
             } label: {
-                Text("I'm Ready")
+                Text("Ok")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -44,5 +45,10 @@ struct EyeCoverPromptView: View {
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
         }
+        .voiceInput(
+            voiceCoordinator,
+            prompt: "Cover your \(eyeToCover.displayName.lowercased()) eye, and say okay when you're ready.",
+            vocabulary: ["okay", "ok"]
+        ) { _ in onReady() }
     }
 }

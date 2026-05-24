@@ -4,6 +4,7 @@ import SwiftUI
 /// symptom profile, then transitions into the refraction test.
 struct SymptomQuestionView: View {
     @ObservedObject var arService: ARFaceTrackingService
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
     let age: Int
     @Binding var symptomProfile: VisionSymptomProfile?
     @State private var navigateToTest = false
@@ -49,6 +50,7 @@ struct SymptomQuestionView: View {
         .navigationDestination(isPresented: $navigateToTest) {
             RefractionCoordinatorView(
                 arService: arService,
+                voiceCoordinator: voiceCoordinator,
                 age: age,
                 symptomProfile: symptomProfile
             )

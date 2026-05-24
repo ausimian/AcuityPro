@@ -16,7 +16,7 @@ struct FanChartView: View {
 
     var body: some View {
         VStack(spacing: 24) {
-            Text("Which line appears darkest and most distinct?")
+            Text("Which line looks darkest and sharpest?")
                 .font(.headline)
                 .multilineTextAlignment(.center)
 
@@ -35,34 +35,23 @@ struct FanChartView: View {
             }
             .frame(width: 280, height: 280)
 
-            VStack(spacing: 8) {
-                Text("Axis: \(selectedIndex.map { "\(axisDegrees(for: $0))\u{00B0}" } ?? "—")")
-                    .font(.system(.title3, design: .rounded).bold())
-
-                Button {
-                    if let selected = selectedIndex {
-                        onAxisSelected(axisDegrees(for: selected))
-                    }
-                } label: {
-                    Text("Confirm Axis")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-                .padding(.horizontal, 40)
-                .disabled(selectedIndex == nil)
-            }
-            .opacity(selectedIndex != nil ? 1 : 0)
-
+            // Single primary-action slot: Confirm when a line is
+            // selected, Ok (no astigmatism) when nothing is.
             Button {
-                onAxisSelected(0) // 0 signals "no astigmatism"
+                if let selected = selectedIndex {
+                    onAxisSelected(axisDegrees(for: selected))
+                } else {
+                    onAxisSelected(0)
+                }
             } label: {
-                Text("All lines look the same")
-                    .font(.subheadline)
+                Text(selectedIndex == nil ? "Ok" : "Confirm")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding()
             }
-            .buttonStyle(.bordered)
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .padding(.horizontal, 40)
         }
     }
 
@@ -84,6 +73,11 @@ struct FanChartView: View {
 }
 
 /// A single line in the fan chart with a wide invisible tap area.
+///
+/// All lines render *defocused* by default — fat-stroked and blurred,
+/// so they read as equally out-of-focus bands. Tapping a line snaps it
+/// into focus (thin, crisp, no blur) — the optometrist's "this axis
+/// becomes visibly sharper than the others" cue.
 private struct FanLine: View {
     let index: Int
     let lineCount: Int
@@ -92,16 +86,18 @@ private struct FanLine: View {
     var body: some View {
         let angle = Angle.degrees(Double(index) * (180.0 / Double(lineCount)))
 
-        // Wide transparent hit area with a thin visible line centered in it
+        // Wide transparent hit area with a visible line centered in it.
         Rectangle()
             .fill(Color.clear)
             .frame(width: 30, height: 260)
             .overlay(
                 Rectangle()
-                    .fill(isSelected ? Color.accentColor : Color.primary)
-                    .frame(width: isSelected ? 3 : 2)
+                    .fill(Color.primary)
+                    .frame(width: isSelected ? 3 : 5)
+                    .blur(radius: isSelected ? 0 : 2.5)
             )
             .contentShape(Rectangle())
             .rotationEffect(angle)
+            .animation(.easeInOut(duration: 0.2), value: isSelected)
     }
 }

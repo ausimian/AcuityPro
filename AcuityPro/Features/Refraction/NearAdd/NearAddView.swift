@@ -2,22 +2,13 @@ import SwiftUI
 
 struct NearAddView: View {
     @ObservedObject var arService: ARFaceTrackingService
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
     @StateObject var viewModel: NearAddViewModel
     let onComplete: (Float) -> Void
 
     var body: some View {
         switch viewModel.step {
-        case .instruction:
-            PhaseInstructionView(
-                title: "Near Reading Distance",
-                description: "Hold the phone at your most comfortable reading distance — the distance where you'd normally read text on your phone.",
-                systemImage: "book",
-                buttonLabel: "Start"
-            ) {
-                viewModel.startTracking(arService: arService)
-            }
-
-        case .active, .confirmation:
+        case .instruction, .active, .confirmation:
             VStack(spacing: 0) {
                 Text("Near Add")
                     .font(.headline)
@@ -25,23 +16,16 @@ struct NearAddView: View {
 
                 Spacer()
 
-                // Sample reading text
-                VStack(spacing: 8) {
-                    Text("The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.")
-                        .font(.system(size: 11))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 40)
-
-                    Text("Hold at your comfortable reading distance")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+                Text("The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.")
+                    .font(.system(size: 11))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
 
                 Spacer()
 
-                DistanceGaugeView(
-                    distanceCm: viewModel.distanceCm,
-                    isStable: viewModel.isStable
+                GuidanceCircleView(
+                    state: viewModel.guidanceState,
+                    distanceCm: viewModel.distanceCm
                 )
                 .padding(.bottom, 20)
 
@@ -53,7 +37,7 @@ struct NearAddView: View {
                     Button {
                         viewModel.confirmDistance()
                     } label: {
-                        Text("This is Comfortable")
+                        Text("Ok")
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .padding()
@@ -64,6 +48,14 @@ struct NearAddView: View {
                 .padding(.horizontal, 40)
                 .padding(.bottom, 40)
             }
+            .onAppear {
+                viewModel.startTracking(arService: arService)
+            }
+            .voiceInput(
+                voiceCoordinator,
+                prompt: "With both eyes open, hold your phone at your normal reading distance, then move the phone until the text is comfortable to read, and say okay.",
+                vocabulary: ["okay", "ok"]
+            ) { _ in viewModel.confirmDistance() }
 
         case .complete:
             Color.clear.onAppear {
