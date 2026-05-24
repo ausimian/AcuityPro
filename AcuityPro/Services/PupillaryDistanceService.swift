@@ -16,8 +16,8 @@ final class PupillaryDistanceService: ObservableObject {
     /// with the shift split evenly between the two mono values.
     /// Single source of truth for the near-PD derivation; a future
     /// PR can replace this with a working-distance-dependent formula.
-    static let nearPdTotalShiftMm: Double = 3.0
-    static let nearPdMonoShiftMm: Double = 1.5
+    nonisolated static let nearPdTotalShiftMm: Double = 3.0
+    nonisolated static let nearPdMonoShiftMm: Double = 1.5
 
     @Published var totalPdMm: Double = 0
     @Published var rightMonoPdMm: Double = 0
