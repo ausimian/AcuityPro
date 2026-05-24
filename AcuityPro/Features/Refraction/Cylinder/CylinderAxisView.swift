@@ -3,6 +3,7 @@ import SwiftUI
 /// Presents the fan chart for axis identification.
 struct CylinderAxisView: View {
     @ObservedObject var viewModel: CylinderTestViewModel
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
 
     var body: some View {
         VStack(spacing: 0) {
@@ -25,5 +26,10 @@ struct CylinderAxisView: View {
 
             Spacer()
         }
+        .voiceInput(
+            voiceCoordinator,
+            prompt: "Touch the darkest, sharpest line, or say okay if they all look the same.",
+            vocabulary: ["okay", "ok"]
+        ) { _ in viewModel.selectAxis(0) }
     }
 }

@@ -35,12 +35,16 @@ struct FanChartView: View {
             }
             .frame(width: 280, height: 280)
 
+            // Single primary-action slot: Confirm when a line is
+            // selected, Ok (no astigmatism) when nothing is.
             Button {
                 if let selected = selectedIndex {
                     onAxisSelected(axisDegrees(for: selected))
+                } else {
+                    onAxisSelected(0)
                 }
             } label: {
-                Text("Confirm")
+                Text(selectedIndex == nil ? "Ok" : "Confirm")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -48,16 +52,6 @@ struct FanChartView: View {
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
             .padding(.horizontal, 40)
-            .disabled(selectedIndex == nil)
-            .opacity(selectedIndex != nil ? 1 : 0)
-
-            Button {
-                onAxisSelected(0) // 0 signals "no astigmatism"
-            } label: {
-                Text("All lines look the same")
-                    .font(.subheadline)
-            }
-            .buttonStyle(.bordered)
         }
     }
 

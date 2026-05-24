@@ -4,18 +4,30 @@ import SwiftUI
 /// User moves phone until this line becomes clear to determine cylinder power.
 struct CylinderPowerView: View {
     @ObservedObject var arService: ARFaceTrackingService
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
     @ObservedObject var viewModel: CylinderTestViewModel
 
     var body: some View {
         switch viewModel.powerStep {
         case .instruction:
-            PhaseInstructionView(
-                title: "Cylinder Power — \(viewModel.eye.displayName) Eye",
-                description: "You'll see two sets of perpendicular lines. Move the phone until both sets look equally clear or equally blurred.",
-                systemImage: "plus.square.dashed",
-                buttonLabel: "Start"
-            ) {
-                viewModel.startPowerTracking(arService: arService)
+            if voiceCoordinator.isAuthorized {
+                // Voice mode: skip the static instruction screen and
+                // speak the cue while the active test view is on screen.
+                Color.clear.onAppear {
+                    viewModel.startPowerTracking(arService: arService)
+                    voiceCoordinator.say(
+                        "Move the phone slowly until both sets of lines look equally clear, or equally blurred. Then say okay."
+                    )
+                }
+            } else {
+                PhaseInstructionView(
+                    title: "Cylinder Power — \(viewModel.eye.displayName) Eye",
+                    description: "You'll see two sets of perpendicular lines. Move the phone until both sets look equally clear or equally blurred.",
+                    systemImage: "plus.square.dashed",
+                    buttonLabel: "Start"
+                ) {
+                    viewModel.startPowerTracking(arService: arService)
+                }
             }
 
         case .active, .confirmation:
@@ -59,7 +71,7 @@ struct CylinderPowerView: View {
             Button {
                 viewModel.confirmPowerClear()
             } label: {
-                Text("Both Sets Look Equal")
+                Text("Ok")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -69,6 +81,10 @@ struct CylinderPowerView: View {
             .padding(.horizontal, 40)
             .padding(.bottom, 40)
         }
+        .voiceInput(
+            voiceCoordinator,
+            vocabulary: ["okay", "ok"]
+        ) { _ in viewModel.confirmPowerClear() }
     }
 
     /// `LineBlock` draws horizontal lines (TABO axis 180); rendering at

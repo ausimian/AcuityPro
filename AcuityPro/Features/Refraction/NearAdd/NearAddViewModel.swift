@@ -4,13 +4,14 @@ import SwiftUI
 @MainActor
 final class NearAddViewModel: ObservableObject {
 
-    @Published var step: PhaseStepState = .instruction
+    @Published var step: PhaseStepState = .active
     @Published var distanceCm: Float = 0
     @Published var isStable: Bool = false
     @Published var stabilityProgress: Double = 0
 
     private(set) var confirmedDistanceCm: Float?
     private let trackingService = FarPointTrackingService()
+    private var didStartTracking = false
     let age: Int
 
     init(age: Int) {
@@ -18,6 +19,9 @@ final class NearAddViewModel: ObservableObject {
     }
 
     func startTracking(arService: ARFaceTrackingService) {
+        guard !didStartTracking else { return }
+        didStartTracking = true
+
         trackingService.startTracking(arService: arService)
 
         trackingService.$currentDistanceCm
@@ -31,8 +35,6 @@ final class NearAddViewModel: ObservableObject {
         trackingService.$stabilityProgress
             .receive(on: DispatchQueue.main)
             .assign(to: &$stabilityProgress)
-
-        step = .active
     }
 
     var guidanceState: GuidanceState {

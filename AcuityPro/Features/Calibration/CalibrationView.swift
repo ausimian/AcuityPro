@@ -2,8 +2,14 @@ import SwiftUI
 
 struct CalibrationView: View {
     @ObservedObject var arService: ARFaceTrackingService
+    @ObservedObject var voiceCoordinator: VoiceCoordinator
     @StateObject private var viewModel = CalibrationViewModel()
     let onCalibrated: () -> Void
+
+    // Flips when "Got it…" actually starts speaking, so the headline
+    // changes to "Locked!" in sync with the audio rather than the few
+    // hundred ms earlier when isLocked first toggles.
+    @State private var lockAnnounced = false
 
     var body: some View {
         VStack(spacing: 40) {
@@ -42,6 +48,21 @@ struct CalibrationView: View {
                 }
             }
 
+            // Glasses reminder — accuracy depends on the user's
+            // unaided refraction.
+            HStack(spacing: 10) {
+                Image(systemName: "eyeglasses")
+                    .font(.title2)
+                    .foregroundStyle(.orange)
+                Text("Please remove your glasses or contact lenses before we begin.")
+                    .font(.subheadline.bold())
+                    .foregroundStyle(.primary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(12)
+            .background(Color.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 10))
+            .padding(.horizontal, 24)
+
             // Instructions
             VStack(spacing: 8) {
                 Text(instructionText)
@@ -58,6 +79,14 @@ struct CalibrationView: View {
         }
         .onAppear {
             viewModel.startCalibration(arService: arService)
+            voiceCoordinator.say(
+                "Before we begin, please take off your glasses or contact lenses. " +
+                "Then hold the phone at arm's length - about 50 centimetres away - and keep it steady.",
+                // If the user is already at 50 cm, isLocked fires during
+                // the intro and "Got it" gets queued behind it. The pause
+                // keeps them from running together.
+                postDelay: 0.6
+            )
         }
         .onDisappear {
             viewModel.stopCalibration(arService: arService)
@@ -65,9 +94,12 @@ struct CalibrationView: View {
         .onChange(of: viewModel.isLocked) { _, locked in
             if locked {
                 HapticFeedback.distanceLocked()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    onCalibrated()
-                }
+                voiceCoordinator.say(
+                    "Got it. Now we'll start your eye test.",
+                    postDelay: 0.6,
+                    onStart: { lockAnnounced = true },
+                    onFinish: { onCalibrated() }
+                )
             }
         }
     }
@@ -79,7 +111,7 @@ struct CalibrationView: View {
     }
 
     private var instructionText: String {
-        if viewModel.isLocked {
+        if viewModel.isLocked && lockAnnounced {
             return "Locked! Starting test..."
         }
         if viewModel.isInRange {

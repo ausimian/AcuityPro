@@ -7,6 +7,9 @@ final class OnboardingViewModel: ObservableObject {
     @Published var deviceSupported = true
     @Published var hasCheckedPermissions = false
 
+    /// Camera is the only required permission — voice (mic + speech
+    /// recognition) is desired but optional, so the test still works
+    /// via taps if the user declines.
     var allPermissionsGranted: Bool {
         cameraAuthorized
     }
@@ -20,11 +23,16 @@ final class OnboardingViewModel: ObservableObject {
         checkCurrentStatus()
     }
 
-    func requestAllPermissions() async {
+    func requestAllPermissions(voice: VoiceCoordinator) async {
         if !cameraAuthorized {
             let granted = await AVCaptureDevice.requestAccess(for: .video)
             cameraAuthorized = granted
         }
+
+        // Voice permissions are optional — fire and forget. The
+        // coordinator's own `isAuthorized` flag gates voice features;
+        // declining here just leaves the test button-driven.
+        await voice.requestAuthorization()
 
         hasCheckedPermissions = true
     }

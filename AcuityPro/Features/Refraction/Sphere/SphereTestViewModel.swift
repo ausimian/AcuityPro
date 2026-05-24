@@ -34,6 +34,15 @@ final class SphereTestViewModel: ObservableObject {
     private static let floorDistanceCm: Float = 27
     private static let floorHoldDuration: TimeInterval = 2.0
 
+    /// How much closer the phone must have moved from the test's starting
+    /// distance for `confirmClear()` to record a found far-point rather
+    /// than "always clear at arm's length". Sits just above ARKit-smoothed
+    /// hand drift (~1 cm) so a screening user with mild myopia in the
+    /// −2.1 to −2.2 D range still registers — anything higher would
+    /// silently fold real myopia into a plano reading.
+    private static let movementThresholdCm: Float = 2.0
+    private var startingDistanceCm: Float?
+
     // MARK: - Properties
 
     let eye: Eye
@@ -61,6 +70,7 @@ final class SphereTestViewModel: ObservableObject {
                 self?.updateLetterHeight(distanceCm: dist)
                 self?.updateBlur(distanceCm: dist)
                 self?.updateFloorHold(distanceCm: dist)
+                self?.captureStartingDistance(dist)
             }
             .store(in: &cancellables)
 
@@ -141,12 +151,26 @@ final class SphereTestViewModel: ObservableObject {
         trackingService.stopTracking()
     }
 
-    /// User confirms the target is clear at the current distance.
+    /// User confirms the target is clear. If the phone hasn't moved
+    /// meaningfully closer from the test's starting distance, the user
+    /// likely never had to search — record this as plano. Otherwise the
+    /// current distance gives us their far point.
     func confirmClear() {
+        if let start = startingDistanceCm,
+           (start - distanceCm) < Self.movementThresholdCm {
+            reportAlwaysClear()
+            return
+        }
         let measurement = trackingService.confirmFarPoint(eye: eye, meridian: .sphere)
         confirmedMeasurement = measurement
         HapticFeedback.distanceLocked()
         step = .complete
+    }
+
+    private func captureStartingDistance(_ distanceCm: Float) {
+        if startingDistanceCm == nil, distanceCm > 0 {
+            startingDistanceCm = distanceCm
+        }
     }
 
     /// User reports the target is always clear (emmetropia/hyperopia).
